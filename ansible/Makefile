@@ -4,17 +4,16 @@
 help:
 	@echo "Available commands:"
 	@echo "  make install        - Install Ansible collections from requirements.yml"
-	@echo "  make ping           - Ping all hosts"
-	@echo "  make ping GROUP=<name> - Ping specific group (e.g., make ping GROUP=swarm)"
+	@echo "  make ping [target]  - Ping all hosts or specific target (e.g., make ping swarm, make ping scarif-01)"
 
 # Install Ansible collections from requirements.yml
 install:
 	ansible-galaxy collection install -r collections/requirements.yml
 
-# Ping all hosts by default
+# Ping hosts - use first argument as target, default to 'all'
 ping:
-ifdef GROUP
-	ansible $(GROUP) -m ping
-else
-	ansible all -m ping
-endif
+	@ansible $(if $(filter-out ping,$@),$(filter-out ping,$@),$(if $(word 2,$(MAKECMDGOALS)),$(word 2,$(MAKECMDGOALS)),all)) -m ping
+
+# Catch-all target to prevent make from complaining about unknown targets
+%:
+	@:
