@@ -1,2 +1,2 @@
 ---
-server_name: webserver1
+ansible_host: 10.10.20.21
