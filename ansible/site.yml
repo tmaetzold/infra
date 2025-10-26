@@ -1,5 +1,15 @@
 ---
-- name: Example playbook
-  hosts: localhost
+# Configure all infrastructure
+- name: Configure common packages on all hosts
+  hosts: all
+  become: true
   roles:
-    - role: trkm.main.run
+    - trkm.main.common
+
+# Future Docker Swarm configuration
+# - name: Configure Docker Swarm
+#   hosts: swarm
+#   become: true
+#   roles:
+#     - trkm.main.docker
+#     - trkm.main.swarm
