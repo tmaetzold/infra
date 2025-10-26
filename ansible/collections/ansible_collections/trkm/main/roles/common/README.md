@@ -1,57 +1,90 @@
-Trkm.Main Run Role
+Trkm.Main Common Role
 ========================
 
-A brief description of the role is here.
+Installs common packages and performs basic system configuration on all managed hosts.
 
 Requirements
 ------------
 
-Any prerequisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- Ansible 2.9 or higher
+- Target hosts running Debian/Ubuntu, RHEL/CentOS, or Arch Linux based distributions
+- Sudo privileges on target hosts
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. host vars, group vars, etc.) should be mentioned here as well.
+Available variables are listed below, along with default values (see `defaults/main.yml`):
+
+```yaml
+# List of common packages to install on all hosts
+common_packages:
+  - vim
+  - git
+  - curl
+  - wget
+
+# Timezone to set on all hosts
+common_timezone: "UTC"
+
+# Whether to update package cache
+common_update_cache: true
+```
+
+You can override these variables in your playbook or inventory group_vars/host_vars files.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Basic usage - install default common packages:
 
 ```yaml
-- name: Execute tasks on servers
-  hosts: servers
+- name: Configure common packages on all hosts
+  hosts: all
+  become: true
   roles:
-    - role: trkm.main.run
-      run_x: 42
+    - role: trkm.main.common
 ```
 
-Another way to consume this role would be:
+With custom package list:
 
 ```yaml
-- name: Initialize the run role from trkm.main
-  hosts: servers
-  gather_facts: false
+- name: Configure common packages with custom list
+  hosts: all
+  become: true
+  roles:
+    - role: trkm.main.common
+      common_packages:
+        - vim
+        - git
+        - htop
+        - python3-pip
+        - docker.io
+      common_timezone: "America/New_York"
+```
+
+Using include_role:
+
+```yaml
+- name: Apply common configuration
+  hosts: swarm
+  become: true
   tasks:
-    - name: Trigger invocation of run role
+    - name: Include common role
       ansible.builtin.include_role:
-        name: trkm.main.run
-      vars:
-        run_x: 42
+        name: trkm.main.common
 ```
 
 License
 -------
 
-<!-- TO-DO: Update the license to the one you want to use (delete this line after setting the license) -->
-BSD
+MIT
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Trent Maetzold

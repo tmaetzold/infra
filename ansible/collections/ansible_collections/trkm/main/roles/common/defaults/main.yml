@@ -1,0 +1,26 @@
+---
+# Default variables for common role
+# These can be overridden in group_vars, host_vars, or playbook vars
+
+# Base packages to install
+common_packages:
+  - vim
+  - git
+  - curl
+  - wget
+  - htop
+  - net-tools
+
+# Packages to remove
+common_remove_packages:
+  - vi
+  - nano
+
+# Timezone to set on all hosts
+common_timezone: "UTC"
+
+# Whether to update package cache before installing
+common_update_cache: true
+
+# Whether to upgrade all packages
+common_upgrade_packages: true
