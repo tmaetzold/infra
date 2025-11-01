@@ -1,0 +1,7 @@
+---
+# Role dependencies
+dependencies:
+  - role: trkm.main.update
+    # Update cache before installing packages, but don't upgrade
+    update_cache: true
+    update_packages: false
