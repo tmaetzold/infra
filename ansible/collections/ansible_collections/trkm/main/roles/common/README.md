@@ -22,12 +22,16 @@ common_packages:
   - git
   - curl
   - wget
+  - htop
+  - net-tools
+
+# Packages to remove from all hosts
+common_remove_packages:
+  - vi
+  - nano
 
 # Timezone to set on all hosts
-common_timezone: "UTC"
-
-# Whether to update package cache
-common_update_cache: true
+timezone: "America/Chicago"
 ```
 
 You can override these variables in your playbook or inventory group_vars/host_vars files.
@@ -35,7 +39,7 @@ You can override these variables in your playbook or inventory group_vars/host_v
 Dependencies
 ------------
 
-None.
+- **trkm.main.update** - Automatically updates package cache before installing packages
 
 Example Playbook
 ----------------
@@ -64,7 +68,7 @@ With custom package list:
         - htop
         - python3-pip
         - docker.io
-      common_timezone: "America/New_York"
+      timezone: "America/New_York"
 ```
 
 Using include_role:
