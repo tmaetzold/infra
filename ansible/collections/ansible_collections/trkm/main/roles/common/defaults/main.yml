@@ -1,9 +1,10 @@
 ---
 # Default variables for common role
 # These can be overridden in group_vars, host_vars, or playbook vars
+# Variables are intentionally unprefixed to serve as global defaults
 
 # Base packages to install
-common_packages:
+add_packages:
   - vim
   - git
   - curl
@@ -12,9 +13,9 @@ common_packages:
   - net-tools
 
 # Packages to remove
-common_remove_packages:
+remove_packages:
   - vi
   - nano
 
-# Timezone to set on all hosts
+# Timezone to set on all hosts (shared across all roles)
 timezone: "UTC"

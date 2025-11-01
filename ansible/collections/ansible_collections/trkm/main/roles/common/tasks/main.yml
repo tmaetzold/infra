@@ -7,12 +7,12 @@
 
 - name: Remove unwanted packages
   ansible.builtin.package:
-    name: "{{ common_remove_packages }}"
+    name: "{{ remove_packages }}"
     state: absent
 
 - name: Install common packages
   ansible.builtin.package:
-    name: "{{ common_packages }}"
+    name: "{{ add_packages }}"
     state: present
 
 - name: Set timezone
