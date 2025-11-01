@@ -17,10 +17,4 @@ common_remove_packages:
   - nano
 
 # Timezone to set on all hosts
-common_timezone: "UTC"
-
-# Whether to update package cache before installing
-common_update_cache: true
-
-# Whether to upgrade all packages
-common_upgrade_packages: true
+timezone: "UTC"
