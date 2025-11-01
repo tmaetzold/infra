@@ -1,0 +1,4 @@
+{
+    "ansible.python.interpreterPath": "/usr/bin/python",
+    "explorer.excludeGitIgnore": true
+}
