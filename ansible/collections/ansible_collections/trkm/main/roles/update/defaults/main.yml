@@ -1,0 +1,14 @@
+---
+# Default variables for update role
+
+# Whether to update package cache
+update_cache: true
+
+# Whether to upgrade all packages
+update_packages: false
+
+# Whether to autoremove unused packages
+update_autoremove: true
+
+# Whether to autoclean package cache (Debian/Ubuntu)
+update_autoclean: true

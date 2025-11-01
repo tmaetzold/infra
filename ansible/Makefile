@@ -1,4 +1,4 @@
-.PHONY: ping help install apply
+.PHONY: ping help install apply update
 
 # Default target - show help
 help:
@@ -6,6 +6,7 @@ help:
 	@echo "  make install        - Install Ansible collections from requirements.yml"
 	@echo "  make ping [target]  - Ping all hosts or specific target (e.g., make ping swarm, make ping scarif-01)"
 	@echo "  make apply          - Apply site.yml to configure all infrastructure"
+	@echo "  make update         - Update package cache and upgrade all packages on all servers"
 
 # Install Ansible collections from requirements.yml
 install:
@@ -14,6 +15,10 @@ install:
 # Apply site.yml playbook to configure all infrastructure
 apply:
 	ansible-playbook site.yml
+
+# Update all servers - upgrade packages
+update:
+	ansible-playbook update.yml
 
 # Ping hosts - use first argument as target, default to 'all'
 ping:

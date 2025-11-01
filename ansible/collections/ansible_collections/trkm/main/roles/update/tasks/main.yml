@@ -1,0 +1,50 @@
+---
+# Update role - handles package cache updates and system upgrades
+
+- name: Update package cache (Debian/Ubuntu)
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+  when:
+    - update_cache | bool
+    - ansible_os_family == "Debian"
+
+- name: Update package cache (RHEL/CentOS)
+  ansible.builtin.dnf:
+    update_cache: true
+  when:
+    - update_cache | bool
+    - ansible_os_family == "RedHat"
+
+- name: Update package cache (Arch Linux)
+  community.general.pacman:
+    update_cache: true
+  when:
+    - update_cache | bool
+    - ansible_os_family == "Archlinux"
+
+- name: Upgrade all packages (Debian/Ubuntu)
+  ansible.builtin.apt:
+    upgrade: dist
+    autoremove: "{{ update_autoremove }}"
+    autoclean: "{{ update_autoclean }}"
+  when:
+    - update_packages | bool
+    - ansible_os_family == "Debian"
+
+- name: Upgrade all packages (RHEL/CentOS)
+  ansible.builtin.dnf:
+    name: "*"
+    state: present
+    update_only: true
+    autoremove: "{{ update_autoremove }}"
+  when:
+    - update_packages | bool
+    - ansible_os_family == "RedHat"
+
+- name: Upgrade all packages (Arch Linux)
+  community.general.pacman:
+    upgrade: true
+  when:
+    - update_packages | bool
+    - ansible_os_family == "Archlinux"

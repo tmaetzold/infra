@@ -1,0 +1,8 @@
+---
+# Update playbook - updates package cache and upgrades all packages
+- name: Update all servers
+  hosts: all
+  become: true
+  roles:
+    - role: trkm.main.update
+      update_packages: true
