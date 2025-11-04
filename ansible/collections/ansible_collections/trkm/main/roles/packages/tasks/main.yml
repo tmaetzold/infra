@@ -48,3 +48,53 @@
   when:
     - update_packages | bool
     - ansible_os_family == "Archlinux"
+
+- name: Remove unwanted packages (Debian/Ubuntu)
+  ansible.builtin.apt:
+    name: "{{ remove_packages + remove_packages_apt }}"
+    state: absent
+    autoremove: true
+  when:
+    - (remove_packages + remove_packages_apt) | length > 0
+    - ansible_os_family == "Debian"
+
+- name: Remove unwanted packages (RHEL/CentOS)
+  ansible.builtin.dnf:
+    name: "{{ remove_packages + remove_packages_dnf }}"
+    state: absent
+    autoremove: true
+  when:
+    - (remove_packages + remove_packages_dnf) | length > 0
+    - ansible_os_family == "RedHat"
+
+- name: Remove unwanted packages (Arch Linux)
+  community.general.pacman:
+    name: "{{ remove_packages + remove_packages_pacman }}"
+    state: absent
+  when:
+    - (remove_packages + remove_packages_pacman) | length > 0
+    - ansible_os_family == "Archlinux"
+
+- name: Install packages (Debian/Ubuntu)
+  ansible.builtin.apt:
+    name: "{{ packages + packages_apt }}"
+    state: present
+  when:
+    - (packages + packages_apt) | length > 0
+    - ansible_os_family == "Debian"
+
+- name: Install packages (RHEL/CentOS)
+  ansible.builtin.dnf:
+    name: "{{ packages + packages_dnf }}"
+    state: present
+  when:
+    - (packages + packages_dnf) | length > 0
+    - ansible_os_family == "RedHat"
+
+- name: Install packages (Arch Linux)
+  community.general.pacman:
+    name: "{{ packages + packages_pacman }}"
+    state: present
+  when:
+    - (packages + packages_pacman) | length > 0
+    - ansible_os_family == "Archlinux"

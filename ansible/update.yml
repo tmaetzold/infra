@@ -4,5 +4,7 @@
   hosts: all
   become: true
   roles:
-    - role: trkm.main.update
-      update_packages: true
+    - role: trkm.main.packages
+      vars:
+        update_cache: true
+        update_packages: true

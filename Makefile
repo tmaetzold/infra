@@ -1,4 +1,4 @@
-.PHONY: help ansible-install ansible-ping ansible-apply ansible-update
+.PHONY: help ansible-install ansible-ping ansible-apply ansible-check ansible-update
 
 # Ansible directory
 ANSIBLE_DIR := ansible
@@ -10,12 +10,17 @@ help:
 	@echo "Ansible:"
 	@echo "  make ansible-install        - Install Ansible collections from requirements.yml"
 	@echo "  make ansible-ping [target]  - Ping all hosts or specific target (e.g., make ansible-ping swarm)"
+	@echo "  make ansible-check          - Check what changes would be made by site.yml (dry-run)"
 	@echo "  make ansible-apply          - Apply site.yml to configure all infrastructure"
 	@echo "  make ansible-update         - Update package cache and upgrade all packages on all servers"
 
 # Install Ansible collections from requirements.yml
 ansible-install:
 	cd $(ANSIBLE_DIR) && ansible-galaxy collection install -r collections/requirements.yml
+
+# Check what changes would be made (dry-run)
+ansible-check:
+	cd $(ANSIBLE_DIR) && ansible-playbook site.yml --check
 
 # Apply site.yml playbook to configure all infrastructure
 ansible-apply:

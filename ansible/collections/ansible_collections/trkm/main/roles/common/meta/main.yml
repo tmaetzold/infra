@@ -1,7 +1,10 @@
 ---
-# Role dependencies
+# Role metadata and dependencies
+
 dependencies:
-  - role: trkm.main.update
-    # Update cache before installing packages, but don't upgrade
-    update_cache: true
-    update_packages: false
+  - role: trkm.main.packages
+    vars:
+      update_cache: true
+      update_packages: false
+      packages: "{{ common_packages }}"
+      remove_packages: "{{ common_remove_packages }}"

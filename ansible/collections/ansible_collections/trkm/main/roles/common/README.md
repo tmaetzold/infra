@@ -39,7 +39,7 @@ You can override these variables in your playbook or inventory group_vars/host_v
 Dependencies
 ------------
 
-- **trkm.main.update** - Automatically updates package cache before installing packages
+- **trkm.main.packages** - Handles package installation and removal
 
 Example Playbook
 ----------------

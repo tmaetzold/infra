@@ -12,3 +12,27 @@ update_autoremove: true
 
 # Whether to autoclean package cache (Debian/Ubuntu)
 update_autoclean: true
+
+# Packages to install on all distributions
+packages: []
+
+# Additional packages to install on Debian/Ubuntu
+packages_apt: []
+
+# Additional packages to install on RHEL/CentOS
+packages_dnf: []
+
+# Additional packages to install on Arch Linux
+packages_pacman: []
+
+# Packages to remove on all distributions
+remove_packages: []
+
+# Additional packages to remove on Debian/Ubuntu
+remove_packages_apt: []
+
+# Additional packages to remove on RHEL/CentOS
+remove_packages_dnf: []
+
+# Additional packages to remove on Arch Linux
+remove_packages_pacman: []
