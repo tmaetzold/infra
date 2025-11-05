@@ -2,7 +2,6 @@
 # Default variables for common role
 # These can be overridden in group_vars, host_vars, or playbook vars
 
-# List of common packages to install on all hosts
 common_packages:
   - vim
   - git
@@ -11,11 +10,14 @@ common_packages:
   - htop
   - net-tools
 
-# List of packages to remove from all hosts
+common_packages_apt:
+  - ca-certificates
+
+common_packages_dnf:
+  - dnf-plugins-core
+
 common_remove_packages:
   - vi
   - nano
 
-# Timezone to set on all hosts
-# Examples: "UTC", "America/New_York", "Europe/London"
 timezone: "UTC"
