@@ -25,14 +25,24 @@ common_packages:
   - htop
   - net-tools
 
+# Additional packages for Debian/Ubuntu
+common_packages_apt:
+  - ca-certificates
+
+# Additional packages for RHEL/CentOS
+common_packages_dnf:
+  - dnf-plugins-core
+
 # Packages to remove from all hosts
 common_remove_packages:
   - vi
   - nano
 
 # Timezone to set on all hosts
-timezone: "America/Chicago"
+timezone: "UTC"
 ```
+
+Note: The default timezone is UTC, but can be overridden in inventory (e.g., `timezone: "America/Chicago"`).
 
 You can override these variables in your playbook or inventory group_vars/host_vars files.
 

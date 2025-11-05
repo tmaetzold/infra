@@ -1,7 +1,7 @@
-Trkm.Main Update Role
+Trkm.Main Packages Role
 ========================
 
-Updates package cache and optionally upgrades all packages on managed hosts.
+Handles package installation, removal, cache updates, and system upgrades on managed hosts.
 
 Requirements
 ------------
@@ -27,6 +27,30 @@ update_autoremove: true
 
 # Whether to autoclean package cache (Debian/Ubuntu)
 update_autoclean: true
+
+# Packages to install on all distributions
+packages: []
+
+# Additional packages to install on Debian/Ubuntu
+packages_apt: []
+
+# Additional packages to install on RHEL/CentOS
+packages_dnf: []
+
+# Additional packages to install on Arch Linux
+packages_pacman: []
+
+# Packages to remove on all distributions
+remove_packages: []
+
+# Additional packages to remove on Debian/Ubuntu
+remove_packages_apt: []
+
+# Additional packages to remove on RHEL/CentOS
+remove_packages_dnf: []
+
+# Additional packages to remove on Arch Linux
+remove_packages_pacman: []
 ```
 
 Dependencies
@@ -37,24 +61,54 @@ None.
 Example Playbook
 ----------------
 
-Update cache only (no upgrades):
+Update cache only (no package changes):
 
 ```yaml
 - name: Update package cache on all hosts
   hosts: all
   become: true
   roles:
-    - trkm.main.update
+    - role: trkm.main.packages
+      update_cache: true
 ```
 
-Update cache and upgrade all packages:
+Install packages:
+
+```yaml
+- name: Install specific packages
+  hosts: all
+  become: true
+  roles:
+    - role: trkm.main.packages
+      packages:
+        - vim
+        - git
+      packages_apt:
+        - software-properties-common
+```
+
+Remove packages:
+
+```yaml
+- name: Remove unwanted packages
+  hosts: all
+  become: true
+  roles:
+    - role: trkm.main.packages
+      remove_packages:
+        - nano
+        - vi
+```
+
+Full system upgrade:
 
 ```yaml
 - name: Update and upgrade all hosts
   hosts: all
   become: true
   roles:
-    - role: trkm.main.update
+    - role: trkm.main.packages
+      update_cache: true
       update_packages: true
 ```
 
@@ -64,7 +118,7 @@ Use as dependency in another role:
 # roles/docker/meta/main.yml
 ---
 dependencies:
-  - role: trkm.main.update
+  - role: trkm.main.packages
 ```
 
 License
