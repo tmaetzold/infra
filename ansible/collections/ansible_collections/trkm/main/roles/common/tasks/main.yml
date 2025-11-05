@@ -10,3 +10,14 @@
   community.general.timezone:
     name: "{{ timezone }}"
   when: timezone is defined
+
+- name: Install/Remove common packages
+  ansible.builtin.include_role:
+    name: trkm.main.packages
+  vars:
+    packages: "{{ common_packages }}"
+    packages_apt: "{{ common_packages_apt }}"
+    packages_dnf: "{{ common_packages_dnf }}"
+    remove_packages: "{{ common_remove_packages }}"
+    update_cache: true
+    update_packages: true
