@@ -6,10 +6,15 @@
   roles:
     - trkm.main.common
 
+- name: Install Docker on swarm hosts
+  hosts: swarm
+  become: true
+  roles:
+    - trkm.main.docker
+
 # Future Docker Swarm configuration
-# - name: Configure Docker Swarm
+# - name: Configure Docker Swarm cluster
 #   hosts: swarm
 #   become: true
 #   roles:
-#     - trkm.main.docker
 #     - trkm.main.swarm
