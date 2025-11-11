@@ -1,20 +1,36 @@
 ---
 # Configure all infrastructure
-- name: Configure common packages on all hosts
+- name: Configure common packages and settings on all hosts
   hosts: all
   become: true
-  roles:
-    - trkm.main.common
+  tasks:
+    - name: Set system timezone
+      community.general.timezone:
+        name: "{{ timezone }}"
 
-- name: Install Docker on swarm hosts
+    - name: Remove unwanted packages
+      ansible.builtin.package:
+        name: "{{ remove_packages }}"
+        state: absent
+      when: remove_packages is defined and remove_packages | length > 0
+
+    - name: Add packages
+      ansible.builtin.package:
+        name: "{{ add_packages }}"
+        state: present
+      when: add_packages is defined and add_packages | length > 0
+
+- name: Configure Docker and NFS on swarm hosts
   hosts: swarm
   become: true
   roles:
-    - trkm.main.docker
+    - geerlingguy.docker
+    - geerlingguy.nfs
 
 # Future Docker Swarm configuration
 # - name: Configure Docker Swarm cluster
 #   hosts: swarm
 #   become: true
-#   roles:
-#     - trkm.main.swarm
+#   tasks:
+#     - name: Initialize Docker Swarm (on first node)
+#       # Add swarm initialization tasks here

@@ -1,3 +1,17 @@
 ---
 ansible_user: tm
 ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+
+add_packages:
+  - vim
+  - git
+  - curl
+  - wget
+  - htop
+  - net-tools
+
+remove_packages:
+  - vi
+  - nano
+
+timezone: "America/Chicago"
