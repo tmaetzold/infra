@@ -1,5 +1,4 @@
 ---
-# Configure all infrastructure
 - name: Configure common packages and settings on all hosts
   hosts: all
   become: true
@@ -26,11 +25,3 @@
   roles:
     - geerlingguy.docker
     - geerlingguy.nfs
-
-# Future Docker Swarm configuration
-# - name: Configure Docker Swarm cluster
-#   hosts: swarm
-#   become: true
-#   tasks:
-#     - name: Initialize Docker Swarm (on first node)
-#       # Add swarm initialization tasks here
