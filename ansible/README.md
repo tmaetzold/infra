@@ -1,49 +1,44 @@
-# Trkm Main Ansible Project
+# Ansible Infrastructure Configuration
 
-## Included content/ Directory Structure
+This directory contains Ansible playbooks and inventory for infrastructure management.
 
-The directory structure follows best practices recommended by the Ansible
-community. Feel free to customize this template according to your specific
-project requirements.
+## Directory Structure
 
-```shell
- ansible-project/
- |── .devcontainer/
- |    └── docker/
- |        └── devcontainer.json
- |    └── podman/
- |        └── devcontainer.json
- |    └── devcontainer.json
- |── .github/
- |    └── workflows/
- |        └── tests.yml
- |    └── ansible-code-bot.yml
- |── .vscode/
- |    └── extensions.json
- |── collections/
- |   └── requirements.yml
- |   └── ansible_collections/
- |       └── project_org/
- |           └── project_repo/
- |               └── README.md
- |               └── roles/sample_role/
- |                         └── README.md
- |                         └── tasks/main.yml
- |── inventory/
- |   |── hosts.yml
- |   |── argspec_validation_inventory.yml
- |   └── groups_vars/
- |   └── host_vars/
- |── ansible-navigator.yml
- |── ansible.cfg
- |── devfile.yaml
- |── linux_playbook.yml
- |── network_playbook.yml
- |── README.md
- |── site.yml
+```
+ansible/
+├── playbooks/
+│   ├── site.yml          # Main configuration playbook
+│   ├── update.yml        # Package update playbook
+│   ├── env-set.yml       # Set environment variables
+│   └── env-unset.yml     # Unset environment variables
+├── inventory/
+│   └── hosts.yml         # Inventory definition
+├── ansible.cfg           # Ansible configuration
+└── requirements.yml      # Ansible Galaxy collections
 ```
 
-## Compatible with Ansible-lint
+## Usage
 
-Tested with ansible-lint >=24.2.0 releases and the current development version
-of ansible-core.
+All playbooks are executed via the `cli` command in the project root:
+
+```bash
+# From project root
+./cli apply              # Apply main configuration
+./cli check              # Dry-run check
+./cli update             # Update packages
+./cli env set -t swarm -e FOO=bar
+./cli env unset -t swarm -e FOO
+```
+
+See the main [README.md](../README.md) for complete CLI documentation.
+
+## Playbooks
+
+- **site.yml** - Main configuration playbook for all hosts
+- **update.yml** - Update and upgrade packages on all servers
+- **env-set.yml** - Set environment variables in `/etc/profile.d/`
+- **env-unset.yml** - Remove environment variable files from `/etc/profile.d/`
+
+## Inventory
+
+Hosts are defined in `inventory/hosts.yml`. See that file for group and host configuration.
