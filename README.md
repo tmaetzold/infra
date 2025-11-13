@@ -64,7 +64,8 @@ Set or unset environment variables on remote hosts:
 infra/
 ├── src/infra/
 │   ├── __init__.py
-│   └── cli.py                # Main CLI application (all logic here)
+│   ├── cli.py                # Main CLI application
+│   └── ansible.py            # Ansible playbook execution utilities
 ├── ansible/
 │   ├── playbooks/
 │   │   ├── site.yml          # Main configuration playbook
@@ -74,7 +75,8 @@ infra/
 │   ├── inventory/
 │   │   └── hosts.yml         # Inventory definition
 │   └── requirements.yml      # Ansible collections
-├── cli -> .venv/bin/cli      # Symlink to CLI in venv
+├── cli-wrapper               # Bash wrapper with relative venv path
+├── cli -> cli-wrapper        # Symlink for convenience
 ├── pyproject.toml            # Python project configuration (uv)
 └── uv.lock                   # Dependency lock file
 ```
