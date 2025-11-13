@@ -4,22 +4,34 @@
 default:
     @just --list
 
-# Apply site.yml to configure all infrastructure
-apply *extra_vars="": depends
-    ansible-playbook playbooks/site.yml {{extra_vars}}
-
-# Check what changes would be made by site.yml
-check: depends
-    ansible-playbook playbooks/site.yml --check
-
-# Install dependencies from requirements.yml
+# Install ansible dependencies
 depends:
     ansible-galaxy install -r requirements.yml
 
-# Ping hosts or groups
+# Ping hosts
 ping target="all":
     ansible {{target}} -m ping
 
-# Update packages on all servers
+# Update all packages
 update: depends
     ansible-playbook playbooks/update.yml
+
+# Set env vars (comma-separated)
+[group("environment")]
+env-set env target="all": depends
+    ansible-playbook playbooks/env-set.yml -e "env_input={{env}} target_hosts={{target}}"
+
+# Unset env vars (comma-separated)
+[group("environment")]
+env-unset vars target="all": depends
+    ansible-playbook playbooks/env-unset.yml -e "env_input={{vars}} target_hosts={{target}}"
+
+# Check playbook changes (dry-run)
+[group("playbook")]
+check playbook="site" *extra_args="": depends
+    ansible-playbook playbooks/{{playbook}}.yml --check {{extra_args}}
+
+# Run a playbook (default: site)
+[group("playbook")]
+play playbook="site" *extra_args="": depends
+    ansible-playbook playbooks/{{playbook}}.yml {{extra_args}}

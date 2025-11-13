@@ -8,5 +8,5 @@ default:
 sync:
     uv sync
 
-# apply, check, depends, ping, update
+# depends, ping, update, [environment], [playbook]
 mod ansible
