@@ -1,0 +1,25 @@
+#!/usr/bin/env just --justfile
+
+[private]
+default:
+    @just --list
+
+# Apply site.yml to configure all infrastructure
+apply *extra_vars="": depends
+    ansible-playbook playbooks/site.yml {{extra_vars}}
+
+# Check what changes would be made by site.yml
+check: depends
+    ansible-playbook playbooks/site.yml --check
+
+# Install dependencies from requirements.yml
+depends:
+    ansible-galaxy install -r requirements.yml
+
+# Ping hosts or groups
+ping target="all":
+    ansible {{target}} -m ping
+
+# Update packages on all servers
+update: depends
+    ansible-playbook playbooks/update.yml
