@@ -114,3 +114,11 @@ export VISUAL=nvim
 # Aliases
 alias vim=nvim
 
+# Import configs outside source control
+configs=(
+    $HOME/.work-profile
+)
+for config in "${configs[@]}"; do
+    [[ -f "$config" ]] && source "$config"
+done
+
