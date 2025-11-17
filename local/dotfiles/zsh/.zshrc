@@ -74,17 +74,6 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-
-# Pure Prompt
-
-autoload -U promptinit; promptinit
-prompt pure
-
-# Environment variables
-export EDITOR=nvim
-export VISUAL=nvim
-
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -111,5 +100,17 @@ export VISUAL=nvim
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# User configuration
+
+# Pure Prompt
+autoload -U promptinit; promptinit
+prompt pure
+
+# Environment variables
+export EDITOR=nvim
+export VISUAL=nvim
+
+# Aliases
 alias vim=nvim
 
