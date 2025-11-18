@@ -4,4 +4,7 @@ version = "0.1.0"
 description = "Infrastructure configuration and automation scripts"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = ["click>=8.3.1"]
+
+[dependency-groups]
+dev = ["pytest>=9.0.1", "pytest-cov>=7.0.0", "pytest-mock>=3.15.1"]
