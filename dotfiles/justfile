@@ -5,13 +5,8 @@
 default:
     @just --list
 
-# symlink all packages to home directory
-install-all:
-    @just stow neovim
-    @just stow zsh
-
 # symlink package to home directory
-install package:
+install package=".":
     @stow -S {{ package }} -t $HOME
 
 # remove package symlinks from home directory
@@ -24,5 +19,12 @@ reinstall package:
 
 # adopt existing files into repository (WARNING: overwrites repo files)
 adopt package:
-    @echo "WARNING: This will overwrite files in the repository with files from $HOME"
-    @read -p "Continue? (y/N) " -n 1 -r && echo && [[ $$REPLY =~ ^[Yy]$$ ]] && stow --adopt {{ package }} -t $HOME || echo "Cancelled"
+    #!/usr/bin/env bash
+    echo "WARNING: This will overwrite files in the repository with files from $HOME"
+    read -p "Continue? (y/N) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        stow --adopt {{ package }} -t $HOME
+    else
+        echo "Cancelled"
+    fi
