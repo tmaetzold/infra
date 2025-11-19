@@ -4,9 +4,12 @@
 default:
     @just --list
 
-# Sync Python dependencies with uv
+# sync Python dependencies with uv
 sync:
     @uv sync
 
-# depends, ping, update, [env], [play]
+# ansible module
 mod ansible
+
+# dotfiles module
+mod dotfiles
