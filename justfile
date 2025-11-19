@@ -6,7 +6,7 @@ default:
 
 # Sync Python dependencies with uv
 sync:
-    uv sync
+    @uv sync
 
 # depends, ping, update, [env], [play]
 mod ansible
