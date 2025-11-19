@@ -1,0 +1,28 @@
+#!/usr/bin/env just --justfile
+
+# show available commands
+[private]
+default:
+    @just --list
+
+# symlink all packages to home directory
+stow-all:
+    @just stow neovim
+    @just stow zsh
+
+# symlink package to home directory
+stow package:
+    @stow -S {{ package }} -t $HOME
+
+# remove package symlinks from home directory
+delete package:
+    @stow -D {{ package }} -t $HOME
+
+# restow package (delete then stow)
+restow package:
+    @stow -R {{ package }} -t $HOME
+
+# adopt existing files into repository (WARNING: overwrites repo files)
+adopt package:
+    @echo "WARNING: This will overwrite files in the repository with files from $HOME"
+    @read -p "Continue? (y/N) " -n 1 -r && echo && [[ $$REPLY =~ ^[Yy]$$ ]] && stow --adopt {{ package }} -t $HOME || echo "Cancelled"
