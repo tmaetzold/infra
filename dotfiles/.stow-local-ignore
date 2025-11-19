@@ -1,0 +1,37 @@
+# Stow ignore patterns
+# Comments and blank lines are allowed
+
+# Version control
+\.git
+\.gitignore
+\.gitmodules
+
+# Documentation
+README.*
+LICENSE.*
+CHANGELOG.*
+TODO.*
+
+# Build/task files
+justfile
+Makefile
+\.make
+
+# Test files
+Dockerfile.*
+docker-compose.*
+\.dockerignore
+
+# Editor/IDE
+\.vscode
+\.idea
+\.DS_Store
+
+# Temporary files
+.*~
+\#.*\#
+\.swp
+\.swo
+
+# Scripts (we don't want to stow these to home)
+scripts/
