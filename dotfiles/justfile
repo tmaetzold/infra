@@ -5,8 +5,14 @@
 default:
     @just --list
 
+# symlink all packages to home directory
+install-all:
+    @just install neovim
+    @just install tmux
+    @just install zsh
+
 # symlink package to home directory
-install package=".":
+install package:
     @stow -S {{ package }} -t $HOME
 
 # remove package symlinks from home directory
