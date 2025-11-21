@@ -1,0 +1,98 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
+
+services:
+  app:
+    image: traefik:v3.3
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - letsencrypt:/letsencrypt
+      - log:/var/log
+    networks:
+      - proxy
+    environment:
+      CF_API_EMAIL: "tkm89@proton.me"
+      CF_DNS_API_TOKEN_FILE: "/run/secrets/cf_dns_api_token"
+      CF_ZONE_API_TOKEN_FILE: "/run/secrets/cf_zone_api_token"
+    secrets:
+      - cf_dns_api_token
+      - cf_zone_api_token
+    configs:
+      - source: dynamic.home-assistant
+        target: /etc/traefik/dynamic/home-assistant.yaml
+      - source: dynamic.immich
+        target: /etc/traefik/dynamic/immich.yaml
+      - source: dynamic.proxmox-ve
+        target: /etc/traefik/dynamic/proxmox-ve.yaml
+      - source: dynamic.qbittorrent
+        target: /etc/traefik/dynamic/qbittorrent.yaml
+      - source: dynamic.sabnzbd
+        target: /etc/traefik/dynamic/sabnzbd.yaml
+      - source: dynamic.unraid
+        target: /etc/traefik/dynamic/unraid.yaml
+    command:
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--log.level=${LOG_LEVEL}"
+      - "--log.filepath=/var/log/traefik.log"
+      - "--accesslog=true"
+      - "--accesslog.filepath=/var/log/traefik-access.log"
+      - "--providers.file.directory=/etc/traefik/dynamic"
+      - "--providers.file.watch=true"
+      - "--providers.swarm.exposedByDefault=false"
+      - "--providers.swarm.network=proxy"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entryPoints.websecure.address=:443"
+      - "--entryPoints.websecure.asDefault=true"
+      - "--entryPoints.websecure.http.tls.certResolver=cloudflare"
+      - "--certificatesResolvers.cloudflare.acme.email=tkm89@proton.me"
+      - "--certificatesResolvers.cloudflare.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesResolvers.cloudflare.acme.dnsChallenge=true"
+      - "--certificatesResolvers.cloudflare.acme.dnsChallenge.provider=cloudflare"
+      - "--serversTransport.insecureSkipVerify=true"
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.role == manager]
+
+volumes:
+  letsencrypt: {}
+  log: {}
+
+networks:
+  proxy:
+    driver: overlay
+    external: true
+
+secrets:
+  cf_dns_api_token:
+    name: traefik.cf_dns_api_token_v1
+    external: true
+  cf_zone_api_token:
+    name: traefik.cf_zone_api_token_v1
+    external: true
+
+configs:
+  dynamic.home-assistant:
+    name: traefik.dynamic.home-assistant_v1
+    external: true
+  dynamic.immich:
+    name: traefik.dynamic.immich_v1
+    external: true
+  dynamic.proxmox-ve:
+    name: traefik.dynamic.proxmox-ve_v1
+    external: true
+  dynamic.qbittorrent:
+    name: traefik.dynamic.qbittorrent_v1
+    external: true
+  dynamic.sabnzbd:
+    name: traefik.dynamic.sabnzbd_v1
+    external: true
+  dynamic.unraid:
+    name: traefik.dynamic.unraid_v1
+    external: true
