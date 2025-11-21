@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
+
+services:
+  app:
+    image: portainer/portainer-ce:2.21.5
+    ports:
+      - "9443:9443"
+    volumes:
+      - data:/data
+    networks:
+      - net
+      - proxy
+    command: -H tcp://tasks.agent:9001 --tlsskipverify
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.portainer.rule=Host(`portainer.maetzold.net`)"
+        - "traefik.http.services.portainer.loadBalancer.server.scheme=https"
+        - "traefik.http.services.portainer.loadBalancer.server.port=9443"
+
+  agent:
+    image: portainer/agent:2.21.5
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - agent_volumes:/var/lib/docker/volumes
+    networks:
+      - net
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.platform.os == linux]
+
+volumes:
+  agent_volumes: {}
+  data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=10.10.20.2,nfsvers=4
+      device: ":/mnt/user/appdata/portainer/data"
+
+networks:
+  net:
+    driver: overlay
+  proxy:
+    driver: overlay
+    external: true
