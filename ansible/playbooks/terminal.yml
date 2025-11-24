@@ -13,11 +13,12 @@
       community.general.pacman:
         update_cache: true
 
-    - name: Install base development tools
+    - name: Install base development tools (this shouldn't be possible)
       community.general.pacman:
         name:
           - base-devel
           - git
+          - just
         state: present
 
     - name: Install shell and terminal tools
