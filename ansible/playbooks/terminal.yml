@@ -1,0 +1,73 @@
+---
+# Terminal environment setup playbook - Arch Linux only
+- name: Set up terminal environment
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Verify host is running Arch Linux
+      ansible.builtin.fail:
+        msg: "This playbook only supports Arch Linux. Detected: {{ ansible_os_family }}"
+      when: ansible_os_family != "Archlinux"
+
+    - name: Update package cache
+      community.general.pacman:
+        update_cache: true
+
+    - name: Install base development tools
+      community.general.pacman:
+        name:
+          - base-devel
+          - git
+        state: present
+
+    - name: Install shell and terminal tools
+      community.general.pacman:
+        name:
+          - zsh
+          - tmux
+          - neovim
+        state: present
+
+    - name: Install programming languages
+      community.general.pacman:
+        name:
+          - python
+          - python-pip
+          - python-pipx
+          - uv
+          - r
+          - rust
+        state: present
+
+    - name: Install Node.js and npm
+      community.general.pacman:
+        name:
+          - npm
+        state: present
+
+    - name: Install Docker
+      community.general.pacman:
+        name:
+          - docker
+          - docker-compose
+        state: present
+
+    - name: Enable Docker service
+      ansible.builtin.systemd:
+        name: docker
+        enabled: true
+        state: started
+
+    - name: Add user to docker group
+      ansible.builtin.user:
+        name: "{{ ansible_user_id }}"
+        groups: docker
+        append: true
+      when: ansible_user_id is defined
+
+    - name: Install paru AUR helper
+      kewlfft.aur.aur:
+        name: paru
+        use: makepkg
+        state: present
+      become: false
