@@ -80,9 +80,12 @@
         append: true
       when: ansible_user_id is defined
 
-    - name: Install paru AUR helper
+    - name: Install AUR packages
       kewlfft.aur.aur:
-        name: paru
+        name: "{{ item }}"
         use: makepkg
         state: present
       become: false
+      loop:
+        - paru
+        - zsh-pure-prompt
