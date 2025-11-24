@@ -28,6 +28,16 @@
           - neovim
         state: present
 
+    - name: Install Neovim dependencies for LazyVim
+      community.general.pacman:
+        name:
+          - ripgrep
+          - fd
+          - python-pynvim
+          - ncurses
+          - lazygit
+        state: present
+
     - name: Install programming languages
       community.general.pacman:
         name:
@@ -57,6 +67,11 @@
         name: docker
         enabled: true
         state: started
+
+    - name: Create docker group
+      ansible.builtin.group:
+        name: docker
+        state: present
 
     - name: Add user to docker group
       ansible.builtin.user:
