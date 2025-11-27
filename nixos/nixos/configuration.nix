@@ -83,8 +83,6 @@
     description = "Trent Maetzold";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
-  neovim
-  zsh
   citrix_workspace
   webkitgtk_4_0
   ghostty
