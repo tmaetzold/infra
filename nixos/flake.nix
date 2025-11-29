@@ -1,5 +1,5 @@
 {
-  description = "Trent's NixOS and Home Manager configuration";
+  description = "NixOS Configuration";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
@@ -12,29 +12,22 @@
 
   outputs = { self, nixpkgs, home-manager }: {
     nixosConfigurations = {
-      # Your laptop config
       trkm-laptop = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./nixos/configuration.nix
-          ./nixos/hardware.nix
+          ./base.nix
+          ./sites/orono.nix
+          ./hosts/trkm-laptop.nix
+          ./hardware/trkm-laptop.nix
+          ./environments/desktop/cinnamon.nix
+          ./users/tm.nix
           
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.tm = import ./home/tm;
+            home-manager.users.tm = ../dotfiles/home.nix;
           }
-        ];
-      };
-    };
-
-    # Standalone home-manager config (for non-NixOS)
-    homeConfigurations = {
-      tm = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        modules = [
-          ./home/tm
         ];
       };
     };
