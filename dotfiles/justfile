@@ -1,36 +1,12 @@
 #!/usr/bin/env just --justfile
 
+home-manager-cmd := "home-manager --extra-experimental-features 'nix-command flakes'"
+
 # show available commands
 [private]
 default:
     @just --list
 
-# symlink all packages to home directory
-install-all:
-    @just install neovim
-    @just install tmux
-    @just install zsh
-
-# symlink package to home directory
-install package:
-    @stow -S {{ package }} -t $HOME
-
-# remove package symlinks from home directory
-delete package:
-    @stow -D {{ package }} -t $HOME
-
-# restow package (delete then stow)
-reinstall package:
-    @stow -R {{ package }} -t $HOME
-
-# adopt existing files into repository (WARNING: overwrites repo files)
-adopt package:
-    #!/usr/bin/env bash
-    echo "WARNING: This will overwrite files in the repository with files from $HOME"
-    read -p "Continue? (y/N) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        stow --adopt {{ package }} -t $HOME
-    else
-        echo "Cancelled"
-    fi
+# link dotfiles using home-manager
+link:
+    {{ home-manager-cmd }} switch --flake .
