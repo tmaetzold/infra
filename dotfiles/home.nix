@@ -16,7 +16,6 @@
 
   home.file = {
     ".tmux.conf".source = ./dotfiles/.tmux.conf;
-    ".zshrc".source = ./dotfiles/.zshrc;
   };
 
   home.packages = with pkgs; [
@@ -24,14 +23,42 @@
     lazygit
     neovim
     nixfmt-rfc-style
+    pure-prompt
     tmux
     tree-sitter
-    zsh
   ];
 
   programs.git = {
     enable = true;
     userName = "Trent Maetzold";
     userEmail = "trent@maetzold.co";
+  };
+  programs.zsh = {
+    enable = true;
+    oh-my-zsh = {
+      enable = true;
+      plugins = [ "git" ];
+      theme = "";
+    };
+    initContent = ''
+      # Pure Prompt
+      autoload -U promptinit; promptinit
+      prompt pure
+      
+      # Import configs outside source control
+      configs=(
+          $HOME/.work-profile
+      )
+      for config in "''${configs[@]}"; do
+          [[ -f "$config" ]] && source "$config"
+      done
+    '';
+    shellAliases = {
+      vim = "nvim";
+    };
+    sessionVariables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+    };
   };
 }
