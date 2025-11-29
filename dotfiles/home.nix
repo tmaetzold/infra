@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, username, email, ... }:
 
 {
   home.username = "tm";
@@ -14,5 +14,19 @@
   home.file = {
     ".tmux.conf".source = ./dotfiles/.tmux.conf;
     ".zshrc".source = ./dotfiles/.zshrc;
+  };
+
+  home.packages = with pkgs; [
+    claude-code
+    lazygit
+    neovim
+    tmux
+    zsh
+  ];
+
+  programs.git = {
+    enable = true;
+    userName = "Trent Maetzold";
+    userEmail = "trent@maetzold.co";
   };
 }
