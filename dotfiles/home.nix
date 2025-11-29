@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, impermanence, ... }:
 
 {
   home.username = "tm";
@@ -8,7 +8,10 @@
   programs.home-manager.enable = true;
 
   xdg.configFile = {
-    "nvim".source = ./dotfiles/.config/nvim;
+    "nvim" = {
+      source = ./dotfiles/.config/nvim;
+      recursive = true;
+    };
   };
 
   home.file = {
@@ -20,7 +23,9 @@
     claude-code
     lazygit
     neovim
+    nixfmt-rfc-style
     tmux
+    tree-sitter
     zsh
   ];
 

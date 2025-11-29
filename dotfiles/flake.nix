@@ -9,10 +9,12 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }: {
-    homeConfigurations."tm" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      modules = [ ./home.nix ];
+  outputs =
+    { nixpkgs, home-manager, ... }:
+    {
+      homeConfigurations."tm" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [ ./home.nix ];
+      };
     };
-  };
 }

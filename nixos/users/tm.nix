@@ -1,4 +1,3 @@
-
 { ... }:
 
 {
@@ -6,6 +5,10 @@
   users.users.tm = {
     isNormalUser = true;
     description = "Trent Maetzold";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+    ];
   };
-
+}
