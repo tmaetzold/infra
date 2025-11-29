@@ -7,6 +7,7 @@ return {
         "ruff_organize_imports",
       },
       just = { "just" },
+      nix = { "nixfmt" },
       yaml = { "prettier" },
     },
   },
