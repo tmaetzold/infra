@@ -10,5 +10,6 @@
       "wheel"
       "docker"
     ];
+    shell = pkgs.zsh;
   };
 }

@@ -1,4 +1,4 @@
-{ pkgs, impermanence, ... }:
+{ pkgs, ... }:
 
 {
   home.username = "tm";
