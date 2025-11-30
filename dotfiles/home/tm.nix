@@ -1,6 +1,12 @@
 { config, pkgs, ... }:
 
 {
+  # Enable nix-command and flakes
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
   home.username = "tm";
   home.homeDirectory = "/home/tm";
   home.stateVersion = "25.05";
@@ -32,17 +38,29 @@
   programs.home-manager.enable = true;
   programs.neovim = {
     enable = true;
-    extraPackages = with pkgs; [
-      # LazyVim
-      tree-sitter
-      # language servers
-      # formatters
-      nixfmt-rfc-style
-      ruff
-      # clipboard
-      wl-clipboard
-      xclip
-    ];
+    extraPackages =
+      with pkgs;
+      [
+        # LazyVim
+        fd
+        fzf
+        ripgrep
+        tree-sitter
+        # conform.nvim
+        fishMinimal
+        markdownlint-cli2
+        # language servers
+        # formatters
+        nixfmt-rfc-style
+        ruff
+        # clipboard
+        wl-clipboard
+        xclip
+      ]
+      ++ (with pkgs.lua51Packages; [
+        lua
+        luarocks
+      ]);
   };
   programs.tmux = {
     enable = true;
