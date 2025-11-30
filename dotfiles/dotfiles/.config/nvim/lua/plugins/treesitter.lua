@@ -11,7 +11,6 @@ return {
         "python",
         "vim",
       },
-      auto_install = false,
     },
   },
 }
