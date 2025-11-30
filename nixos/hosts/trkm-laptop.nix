@@ -4,6 +4,15 @@
 { pkgs, ... }:
 
 {
+  imports = [
+    ../base.nix
+    ../hardware/trkm-laptop.nix
+    ../environments/desktop/cinnamon.nix
+    ../sites/orono.nix
+    ../users/tm.nix
+    ../users/jm.nix
+  ];
+
   networking.hostName = "trkm-laptop";
 
   # List packages installed in system profile. To search, run:

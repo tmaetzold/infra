@@ -1,7 +1,6 @@
 { pkgs, ... }:
 
 {
-  # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.tm = {
     isNormalUser = true;
     description = "Trent Maetzold";
@@ -11,17 +10,14 @@
       "podman"
     ];
     shell = pkgs.zsh;
-    packages = with pkgs; [
-      oh-my-zsh
-      pure-prompt
-      zsh
-    ];
   };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  programs.zsh.enable = true;
+
   environment.systemPackages = with pkgs; [
+    citrix_workspace
     distrobox
+    ghostty
   ];
 
   virtualisation.podman = {
