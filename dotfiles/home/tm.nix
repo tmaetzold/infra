@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   home.username = "tm";
@@ -19,6 +19,10 @@
     just
     stow
   ];
+  home.file = {
+    ".config/nvim".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/infra/dotfiles/nvim/.config/nvim";
+  };
 
   programs.git = {
     enable = true;
