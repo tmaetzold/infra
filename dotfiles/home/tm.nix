@@ -20,10 +20,6 @@
     stow
   ];
 
-  home.file = {
-    ".tmux.conf".source = ../tmux/.tmux.conf;
-  };
-
   programs.git = {
     enable = true;
     userName = "Trent Maetzold";
@@ -43,6 +39,14 @@
       wl-clipboard
       xclip
     ];
+  };
+  programs.tmux = {
+    enable = true;
+    clock24 = true;
+    extraConfig = ''
+      set-option -g focus-events on
+      set-option -ga terminal-features '*:RGB'
+    '';
   };
   programs.zsh = {
     enable = true;
