@@ -8,8 +8,11 @@
     file = {
       ".config/nvim".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/infra/dotfiles/nvim/.config/nvim";
+      ".config/jiratui".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/infra/dotfiles/jiratui/.config/jiratui";
     };
     packages = with pkgs; [
+      jiratui
       lazygit
       # languages
       nodejs
