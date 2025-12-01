@@ -25,9 +25,13 @@
 
             home-manager.nixosModules.home-manager
             {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.tm = ../dotfiles/home/tm.nix;
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.tm = {
+                  imports = [ ../dotfiles/home/tm.nix ];
+                };
+              };
             }
           ];
         };
