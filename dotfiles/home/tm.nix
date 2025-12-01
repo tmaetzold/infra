@@ -5,8 +5,10 @@
   home.homeDirectory = "/home/tm";
   home.stateVersion = "25.05";
   home.packages = with pkgs; [
+    blender
     claude-code
     lazygit
+    orca-slicer
     # languages
     nodejs
     python3
@@ -21,6 +23,12 @@
     ansible
     just
     stow
+    # container management
+    docker-compose
+    # system utilities
+    git
+    curl
+    wget
   ];
   home.file = {
     ".config/nvim".source =
@@ -84,10 +92,6 @@
       ++ (with pkgs.python3Packages; [
         pip
         pynvim
-      ])
-      ++ (with pkgs.tree-sitter-grammars; [
-        tree-sitter-norg
-        tree-sitter-norg-meta
       ]);
   };
   programs.tmux = {
