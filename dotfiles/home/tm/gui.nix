@@ -3,6 +3,6 @@
 {
   imports = [
     ./tui.nix
-    ../modules/dconf.nix
+    ./modules/dconf.nix
   ];
 }
