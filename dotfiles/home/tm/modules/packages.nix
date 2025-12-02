@@ -1,14 +1,9 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  nixpkgs.config.allowUnfreePredicate =
-    pkg:
-    builtins.elem (config.lib.getName pkg) [
-      "claude-code"
-    ];
-
   home = {
     packages = with pkgs; [
+      claude-code
       lazygit
 
       # languages
