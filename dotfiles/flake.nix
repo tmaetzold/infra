@@ -12,6 +12,8 @@
   outputs =
     { nixpkgs, home-manager, ... }:
     {
+      nixpkgs.config.AllowUnfree = true;
+
       homeConfigurations = {
         "tm-gui" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;

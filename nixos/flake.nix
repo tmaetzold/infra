@@ -16,6 +16,8 @@
       home-manager,
     }:
     {
+      nixpkgs.config.AllowUnfree = true;
+
       nixosConfigurations = {
         trkm-laptop = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
