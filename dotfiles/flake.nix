@@ -12,27 +12,25 @@
   outputs =
     { nixpkgs, home-manager, ... }:
     {
-      nixpkgs.config.AllowUnfree = true;
-
       homeConfigurations = {
         "tm-gui" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           modules = [
-            ./flake_config.nix
+            ./config.nix
             ./home/tm/gui.nix
           ];
         };
         "tm-tui" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           modules = [
-            ./flake_config.nix
+            ./config.nix
             ./home/tm/tui.nix
           ];
         };
         "tm-work" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           modules = [
-            ./flake_config.nix
+            ./config.nix
             ./home/tm/work.nix
           ];
         };
