@@ -18,6 +18,10 @@
     citrix_workspace
     distrobox
     ghostty
+    steam
+    steam-devices-udev-rules
+    steam-tui
+    steamcmd
   ];
 
   virtualisation.podman = {

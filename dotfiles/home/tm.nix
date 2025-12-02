@@ -4,6 +4,7 @@
   home = {
     username = "tm";
     homeDirectory = "/home/tm";
+    stateVersion = "25.05";
 
     file = {
       ".config/nvim".source =
@@ -36,8 +37,6 @@
       curl
       wget
     ];
-
-    stateVersion = "25.05";
   };
 
   nixpkgs.config.allowUnfreePredicate =
