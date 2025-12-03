@@ -29,6 +29,7 @@
 
         # language servers
         copilot-language-server
+        rust-analyzer
         yaml-language-server
 
         # linters
