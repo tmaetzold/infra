@@ -1,0 +1,74 @@
+# Email Assistant Configuration
+# Copy this file and customize for your needs
+
+# AI Model Configuration
+ai:
+  # model: ollama | anthropic | openai
+  model: ollama
+
+  ollama:
+    url: http://localhost:11434
+    model: qwen2.5:7b
+
+  anthropic:
+    api_key: ${ANTHROPIC_API_KEY} # or set via env var or Docker secret
+    model: claude-3-5-sonnet-20241022
+
+  openai:
+    api_key: ${OPENAI_API_KEY} # or set via env var or Docker secret
+    model: gpt-4
+
+# Email Provider Configuration
+email:
+  # provider: office365 | imap | gmail | proton
+  provider: office365
+
+  # Your email username (used for all providers)
+  username: your-email@example.com
+
+  # Office 365 / Outlook configuration
+  office365:
+    client_id: your-app-client-id
+    client_secret: ${O365_CLIENT_SECRET} # optional, for service principal auth
+    tenant_id: common # or your specific tenant ID
+
+  # IMAP configuration (for Gmail, Proton, generic IMAP)
+  imap:
+    host: imap.example.com
+    port: 993
+    ssl: true
+    # password: set via env var EMAIL_PASSWORD or Docker secret
+
+  # Gmail-specific (uses IMAP)
+  gmail:
+    host: imap.gmail.com
+    port: 993
+    ssl: true
+    # Requires app-specific password if 2FA enabled
+
+  # Proton Mail (uses IMAP via ProtonMail Bridge)
+  proton:
+    host: 127.0.0.1 # ProtonMail Bridge runs locally
+    port: 1143
+    ssl: false # Bridge doesn't use SSL on localhost
+
+# Categorization Prompt
+categorization:
+  prompt: |
+    You are an email categorization assistant. Analyze the following email and decide what action to take.
+
+    Categories:
+    - keep_inbox: Important emails that need my attention or action
+    - archive: Newsletters, receipts, confirmations that are done with
+    - mark_read: Low priority items to mark as read but keep in inbox
+    - move_folder: Emails that belong in specific folders (specify folder name)
+    - delete: Obvious spam or completely irrelevant emails
+
+    Rules:
+    - Keep anything work-related, important personal emails, or requiring action
+    - Archive newsletters, marketing emails, transactional emails (receipts, confirmations)
+    - Mark as read: automated notifications that are just FYI
+    - Only delete obvious spam or clearly irrelevant emails
+    - When in doubt, keep it in inbox
+
+    Be conservative - it's better to keep something than delete it.
