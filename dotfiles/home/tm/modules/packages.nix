@@ -2,40 +2,43 @@
 
 {
   home = {
-    packages = with pkgs; [
-      claude-code
-      lazygit
+    packages =
+      with pkgs;
+      [
+        claude-code
+        lazygit
 
-      # languages
-      nodejs
-      python3
-      R
-      rustc
-      sqlite
+        # languages
+        nodejs
+        python3
+        R
+        rustc
+        sqlite
 
-      # formatters
-      nixfmt-rfc-style
-      ruff
+        # formatters
+        nixfmt-rfc-style
+        ruff
 
-      # python extras
-      uv
+        # python extras
+        uv
 
-      # rust extras
-      cargo
+        # rust extras
+        cargo
 
-      # zsh extras
-      pure-prompt
+        # zsh extras
+        pure-prompt
 
-      # infra depends
-      ansible
-      just
-      stow
+        # infra depends
+        ansible
+        just
+        stow
 
-      # system utilities
-      curl
-      git
-      gnumake
-      wget
-    ];
+        # system utilities
+        curl
+        git
+        gnumake
+        wget
+      ]
+      ++ (with pkgs.python3Packages; [ euporie ]);
   };
 }
