@@ -11,8 +11,8 @@ return {
               analysis = {
                 typeCheckingMode = "basic",
                 diagnosticMode = "openFilesOnly",
-                autoSearchPaths = false,
-                useLibraryCodeForTypes = false,
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
                 ignore = { ".venv", "venv", "**/__pycache__", ".pytest_cache", ".mypy_cache" },
               },
             },
