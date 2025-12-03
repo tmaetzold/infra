@@ -28,6 +28,7 @@
         tectonic
 
         # language servers
+        copilot-language-server
         yaml-language-server
 
         # linters
