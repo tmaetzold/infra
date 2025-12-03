@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+_:
 
 {
   users.users.jm = {
@@ -6,8 +6,4 @@
     description = "Justine Maetzold";
     extraGroups = [ "networkmanager" ];
   };
-
-  environment.systemPackages = with pkgs; [
-    citrix_workspace
-  ];
 }

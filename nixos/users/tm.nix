@@ -13,19 +13,4 @@
   };
 
   programs.zsh.enable = true;
-
-  environment.systemPackages = with pkgs; [
-    citrix_workspace
-    distrobox
-    ghostty
-    steam
-    steam-devices-udev-rules
-    steam-tui
-    steamcmd
-  ];
-
-  virtualisation.podman = {
-    enable = true;
-    dockerCompat = true;
-  };
 }

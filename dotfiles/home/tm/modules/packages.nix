@@ -39,6 +39,6 @@
         gnumake
         wget
       ]
-      ++ (with pkgs.python3Packages; [ euporie ]);
+      ++ (with pkgs.python3Packages; [ ]);
   };
 }
