@@ -36,6 +36,8 @@ _:
         done
       '';
       shellAliases = {
+        lgit = "lazygit";
+        nb = "euporie-notebook";
         vim = "nvim";
       };
       sessionVariables = {
