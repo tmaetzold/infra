@@ -3,6 +3,13 @@ _:
 {
   imports = [ ./neovim.nix ];
 
+  xdg.configFile = {
+    "ghostty/config".text = ''
+      theme = catppuccin-mocha
+      font-size = 10
+    '';
+  };
+
   programs = {
     home-manager = {
       enable = true;
