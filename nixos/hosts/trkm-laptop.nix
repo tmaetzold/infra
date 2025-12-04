@@ -11,5 +11,4 @@ _:
   ];
 
   networking.hostName = "trkm-laptop";
-  services.printing.enable = true;
 }
