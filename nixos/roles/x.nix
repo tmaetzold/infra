@@ -2,6 +2,7 @@ _:
 
 {
   security.rtkit.enable = true;
+
   services = {
     xserver = {
       enable = true;

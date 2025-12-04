@@ -1,6 +1,11 @@
 _:
 
 {
+  imports = [
+    ./modules/packages.nix
+    ./modules/dotfiles.nix
+  ];
+
   home = {
     username = "tm";
     homeDirectory = "/home/tm";
@@ -8,9 +13,4 @@ _:
   };
 
   nixpkgs.config.allowUnfree = true;
-
-  imports = [
-    ./modules/packages.nix
-    ./modules/dotfiles.nix
-  ];
 }
