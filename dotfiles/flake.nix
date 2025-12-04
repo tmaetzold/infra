@@ -13,18 +13,11 @@
     { nixpkgs, home-manager, ... }:
     {
       homeConfigurations = {
-        "tm-gui" = home-manager.lib.homeManagerConfiguration {
+        "tm-home" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           modules = [
             ./config.nix
-            ./home/tm/gui.nix
-          ];
-        };
-        "tm-tui" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          modules = [
-            ./config.nix
-            ./home/tm/tui.nix
+            ./home/tm/home.nix
           ];
         };
         "tm-work" = home-manager.lib.homeManagerConfiguration {

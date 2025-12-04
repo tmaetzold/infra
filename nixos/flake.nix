@@ -27,7 +27,7 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                users.tm = import ../dotfiles/home/tm/gui.nix;
+                users.tm = import ../dotfiles/home/tm/home.nix;
               };
             }
           ];
