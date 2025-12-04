@@ -15,6 +15,12 @@ return {
                 autoSearchPaths = true,
                 useLibraryCodeForTypes = true,
                 exclude = { ".venv", "venv", "**/__pycache__", ".pytest_cache", ".mypy_cache" },
+                ---|--------------------------------------------------------------------|
+                -- | Setting | Files Analyzed? | Errors Shown? | Available for Imports? |
+                -- |---------|-----------------|---------------|------------------------|
+                -- | include | ✅ Yes          | ✅ Yes        | ✅ Yes                 |
+                -- | exclude | ❌ No           | ❌ No         | ⚠️ Only if imported    |
+                -- | ignore  | ✅ Yes          | ❌ No         | ✅ Yes                 |
               },
             },
           },
