@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
+
+services:
+  app:
+    image: ckulka/baikal:nginx
+    volumes:
+      - config:/var/www/baikal/config
+      - Specific:/var/www/baikal/Specific
+    networks:
+      - net
+      - proxy
+    environment:
+      BAIKAL_SKIP_CHOWN: "true"
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.baikal.rule=Host(`dav.trkm.io`)"
+        - "traefik.http.services.baikal.loadBalancer.server.port=80"
+
+  db:
+    image: lscr.io/linuxserver/mariadb:10.11.6
+    volumes:
+      - db_config:/config
+    networks:
+      - net
+    environment:
+      PUID: "99"
+      PGID: "100"
+      UMASK: "022"
+      TZ: "America/Chicago"
+      MYSQL_DATABASE: "baikal"
+      MYSQL_USER: "baikal"
+      FILE__MYSQL_PASSWORD: "/run/secrets/mysql_password"
+      FILE__MYSQL_ROOT_PASSWORD: "/run/secrets/mysql_root_password"
+    secrets:
+      - mysql_password
+      - mysql_root_password
+    deploy:
+      mode: replicated
+      replicas: 1
+
+volumes:
+  config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=10.10.20.2,nfsvers=4
+      device: ":/mnt/user/appdata/baikal/config"
+  Specific:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=10.10.20.2,nfsvers=4
+      device: ":/mnt/user/appdata/baikal/Specific"
+  db_config:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=10.10.20.2,nfsvers=4
+      device: ":/mnt/user/appdata/baikal/db/config"
+
+networks:
+  net:
+    driver: overlay
+  proxy:
+    driver: overlay
+    external: true
+
+secrets:
+  mysql_password:
+    name: baikal.mysql_password_v1
+    external: true
+  mysql_root_password:
+    name: baikal.mysql_root_password_v1
+    external: true
