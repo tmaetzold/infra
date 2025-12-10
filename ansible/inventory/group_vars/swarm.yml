@@ -7,15 +7,11 @@ nfs_server: "10.10.20.2"
 
 # Autofs Configuration for Self-Healing NFS Mounts
 autofs_maps:
-  - mountpoint: "/mnt/nfs"
+  - mountpoint: "/mnt/nas/trkm-unraid"
     options:
       - "--timeout=60"
       - "--ghost"
     directories:
-      - path: "db"
-        server: "{{ nfs_server }}:/mnt/user/db"
-        options:
-          - "nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,nointr,tcp,sync"
       - path: "appdata"
         server: "{{ nfs_server }}:/mnt/user/appdata"
         options:
@@ -24,3 +20,7 @@ autofs_maps:
         server: "{{ nfs_server }}:/mnt/user/data"
         options:
           - "nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,nointr,noatime,tcp"
+      - path: "db"
+        server: "{{ nfs_server }}:/mnt/user/db"
+        options:
+          - "nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,nointr,tcp,sync"

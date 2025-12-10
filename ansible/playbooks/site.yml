@@ -29,6 +29,6 @@
   tasks:
     - name: Create autofs mount base directory
       ansible.builtin.file:
-        path: "/mnt/nfs"
+        path: "/mnt/nas/trkm-unraid"
         state: directory
-        mode: '0755'
+        mode: "0755"
