@@ -7,3 +7,4 @@ collections:
 roles:
   - name: geerlingguy.docker
   - name: geerlingguy.nfs
+  - name: robertdebock.autofs

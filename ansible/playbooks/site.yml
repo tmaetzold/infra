@@ -25,3 +25,10 @@
   roles:
     - geerlingguy.docker
     - geerlingguy.nfs
+    - robertdebock.autofs
+  tasks:
+    - name: Create autofs mount base directory
+      ansible.builtin.file:
+        path: "/mnt/nfs"
+        state: directory
+        mode: '0755'

@@ -1,3 +1,23 @@
 ---
 docker_users:
   - "{{ ansible_user }}"
+
+# Autofs Configuration for Self-Healing NFS Mounts
+autofs_maps:
+  - mountpoint: "/mnt/nfs"
+    options:
+      - "--timeout=60"
+      - "--ghost"
+    directories:
+      - path: "db"
+        server: "{{ nfs_server | default(groups['swarm'][0]) }}:/mnt/user/db"
+        options:
+          - "nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,nointr,tcp,sync"
+      - path: "appdata"
+        server: "{{ nfs_server | default(groups['swarm'][0]) }}:/mnt/user/appdata"
+        options:
+          - "nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=300,retrans=2,nointr,tcp"
+      - path: "data"
+        server: "{{ nfs_server | default(groups['swarm'][0]) }}:/mnt/user/data"
+        options:
+          - "nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,nointr,noatime,tcp"
