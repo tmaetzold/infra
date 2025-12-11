@@ -30,6 +30,9 @@
     };
   };
 
+  # Enable dynamic linking for development
+  programs.nix-ld.enable = true;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
