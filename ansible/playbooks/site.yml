@@ -32,3 +32,18 @@
         path: "/mnt/nas/trkm-unraid"
         state: directory
         mode: "0755"
+
+    - name: Create overlay networks
+      community.docker.docker_network:
+        name: "{{ item }}"
+        driver: overlay
+        scope: swarm
+      loop: "{{ docker_swarm_networks }}"
+      when: inventory_hostname == groups['swarm'][0]
+
+    - name: Deploy Portainer stack
+      community.docker.docker_stack:
+        state: present
+        name: portainer
+        compose: "{{ playbook_dir }}/../services/stacks/portainer/compose.yaml"
+      when: inventory_hostname == groups['swarm'][0]

@@ -5,6 +5,10 @@ docker_users:
 # NFS Server Configuration
 nfs_server: "10.10.20.2"
 
+# Docker Swarm Networks
+docker_swarm_networks:
+  - proxy
+
 # Autofs Configuration for Self-Healing NFS Mounts
 autofs_maps:
   - mountpoint: "/mnt/nas/trkm-unraid"
