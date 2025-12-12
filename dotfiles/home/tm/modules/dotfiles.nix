@@ -43,7 +43,7 @@ _:
         done
       '';
       shellAliases = {
-        lgit = "lazygit";
+        lg = "lazygit";
         nb = "euporie-notebook";
         vim = "nvim";
       };
