@@ -1,7 +1,23 @@
-_:
+{ pkgs, ... }:
 
 {
-  imports = [ ./base.nix ];
+  imports = [
+    ./modules/packages.nix
+    ./modules/dotfiles.nix
+  ];
+
+  home = {
+    username = "tmaetzold_gcp";
+    homeDirectory = "/home/tmaetzold_gcp";
+    stateVersion = "25.05";
+    packages = with pkgs; [
+      krb5
+      libkrb5
+      libpq.pg_config
+    ];
+  };
+
+  nixpkgs.config.allowUnfree = true;
 
   xdg.configFile = {
     "jiratui/config.yaml".text = ''
