@@ -2,7 +2,7 @@
 
 services:
   app:
-    image: traefik:v3.3
+    image: traefik:v3.6
     ports:
       - "80:80"
       - "443:443"
@@ -44,6 +44,7 @@ services:
       - "--providers.file.watch=true"
       - "--providers.swarm.exposedByDefault=false"
       - "--providers.swarm.network=proxy"
+      - "--providers.swarm.watch=true"
       - "--entryPoints.web.address=:80"
       - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
       - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
@@ -59,6 +60,10 @@ services:
       mode: global
       placement:
         constraints: [node.role == manager]
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.traefik.rule=Host(`traefik.trkm.io`)"
+        - "traefik.http.services.traefik.loadBalancer.server.port=8080"
 
 volumes:
   letsencrypt: {}
