@@ -4,6 +4,4 @@ version = "0.1.0"
 description = "Infrastructure configuration and automation scripts"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = [
-    "jsondiff>=2.2.1",
-]
+dependencies = []
