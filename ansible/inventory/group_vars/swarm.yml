@@ -9,6 +9,11 @@ nfs_server: "10.10.20.2"
 docker_swarm_networks:
   - proxy
 
+# Docker Swarm Stacks to Deploy
+docker_swarm_stacks:
+  - portainer
+  - traefik
+
 # Autofs Configuration for Self-Healing NFS Mounts
 autofs_maps:
   - mountpoint: "/mnt/nas/trkm-unraid"

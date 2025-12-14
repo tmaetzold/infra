@@ -9,6 +9,8 @@ add_packages:
   - wget
   - htop
   - net-tools
+  - python3
+  - python3-pip
 
 remove_packages:
   - vi

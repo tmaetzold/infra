@@ -39,11 +39,37 @@
         driver: overlay
         scope: swarm
       loop: "{{ docker_swarm_networks }}"
-      when: inventory_hostname == groups['swarm'][0]
+      when: inventory_hostname == groups['swarm_managers'][0]
 
-    - name: Deploy Portainer stack
+    - name: Install Python dependencies for Docker modules
+      ansible.builtin.package:
+        name:
+          - python3-jsondiff
+          - python3-yaml
+        state: present
+      when: inventory_hostname == groups['swarm_managers'][0]
+
+    - name: Copy compose files to remote host
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../services/stacks/{{ item }}/"
+        dest: "/tmp/stacks/{{ item }}/"
+        mode: "0644"
+      loop: "{{ docker_swarm_stacks }}"
+      when: inventory_hostname == groups['swarm_managers'][0]
+
+    - name: Deploy Docker Swarm stacks
       community.docker.docker_stack:
         state: present
-        name: portainer
-        compose: "{{ playbook_dir }}/../services/stacks/portainer/compose.yaml"
-      when: inventory_hostname == groups['swarm'][0]
+        name: "{{ item }}"
+        compose: "/tmp/stacks/{{ item }}/compose.yaml"
+        prune: true
+        resolve_image: always
+        api_version: auto
+      loop: "{{ docker_swarm_stacks }}"
+      when: inventory_hostname == groups['swarm_managers'][0]
+
+    - name: Clean up compose files from remote host
+      ansible.builtin.file:
+        path: "/tmp/stacks"
+        state: absent
+      when: inventory_hostname == groups['swarm_managers'][0]
