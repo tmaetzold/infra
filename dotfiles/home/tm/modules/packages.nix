@@ -2,43 +2,15 @@
 
 {
   home = {
-    packages =
-      with pkgs;
-      [
-        claude-code
-        lazygit
+    packages = with pkgs; [
+      claude-code
+      lazygit
+      pure-prompt
+      uv
 
-        # languages
-        nodejs
-        python3
-        R
-        rustc
-        sqlite
-
-        # formatters
-        nixfmt-rfc-style
-        ruff
-
-        # python extras
-        uv
-
-        # rust extras
-        cargo
-
-        # zsh extras
-        pure-prompt
-
-        # infra depends
-        ansible
-        just
-        stow
-
-        # system utilities
-        curl
-        git
-        gnumake
-        wget
-      ]
-      ++ (with pkgs.python3Packages; [ ]);
+      # infra depends
+      ansible
+      just
+    ];
   };
 }

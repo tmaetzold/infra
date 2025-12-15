@@ -35,6 +35,10 @@
         # linters
         statix
 
+        # formatters
+        nixfmt-rfc-style
+        ruff
+
         # clipboard
         wl-clipboard
         xclip
