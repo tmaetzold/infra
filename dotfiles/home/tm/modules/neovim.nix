@@ -38,10 +38,6 @@
         # formatters
         nixfmt-rfc-style
         ruff
-
-        # clipboard
-        wl-clipboard
-        xclip
       ]
       ++ (with pkgs.lua51Packages; [
         lua
