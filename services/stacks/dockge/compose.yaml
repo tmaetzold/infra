@@ -12,3 +12,7 @@ services:
       - /mnt/user/infra/services/stacks:/opt/stacks
     environment:
       - DOCKGE_STACKS_DIR=/opt/stacks
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/alex3305/unraid-docker-templates/master/images/dockge.png"
+      net.unraid.docker.webui: "http://[IP]:[PORT:5001]"
+      net.unraid.docker.shell: "/usr/bin/bash"
