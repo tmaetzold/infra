@@ -2,17 +2,23 @@
 
 services:
   dockge:
+    container_name: dockge
     image: louislam/dockge:1
     restart: unless-stopped
+    networks:
+      - net
     ports:
-      - 5001:5001
+      - "5001:5001"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /mnt/user/appdata/dockge/data:/app/data
       - /mnt/user/infra/services/stacks:/opt/stacks
     environment:
-      - DOCKGE_STACKS_DIR=/opt/stacks
+      DOCKGE_STACKS_DIR: "/opt/stacks"
     labels:
       net.unraid.docker.icon: "https://raw.githubusercontent.com/alex3305/unraid-docker-templates/master/images/dockge.png"
       net.unraid.docker.webui: "http://[IP]:[PORT:5001]"
       net.unraid.docker.shell: "/usr/bin/bash"
+
+networks:
+  net:
