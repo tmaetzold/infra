@@ -42,13 +42,15 @@
     curl
     gcc
     gnumake
+    htop
     unzip
     wget
   ];
 
-  virtualisation.podman = {
+  virtualisation.docker = {
     enable = true;
-    dockerCompat = true;
+    enableOnBoot = true;
+    extraPackages = with pkgs; [ docker-compose ];
   };
 
   # Some programs need SUID wrappers, can be configured further or are
