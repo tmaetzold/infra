@@ -2,8 +2,8 @@
 
 services:
   sabnzbd:
-    image: lscr.io/linuxserver/sabnzbd:latest
     container_name: sabnzbd
+    image: lscr.io/linuxserver/sabnzbd:latest
     restart: unless-stopped
     ports:
       - "8080:8080"
