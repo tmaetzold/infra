@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
+
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    restart: unless-stopped
+    ports:
+      - "9696:9696"
+    volumes:
+      - /mnt/user/appdata/prowlarr/config:/config
+    networks:
+      - pvr
+    environment:
+      PUID: "99"
+      PGID: "100"
+      UMASK: "022"
+      TZ: "America/Chicago"
+
+networks:
+  pvr:
+    external: true
