@@ -1,4 +1,4 @@
-_:
+{ pkgs, ... }:
 
 {
   imports = [ ./neovim.nix ];
@@ -7,6 +7,9 @@ _:
     "ghostty/config".text = ''
       theme = catppuccin-mocha
       font-size = 10
+      clipboard-read = allow
+      clipboard-write = allow
+      clipboard-paste-protection = false
     '';
   };
 
