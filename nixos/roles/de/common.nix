@@ -6,5 +6,8 @@ _:
   ];
 
   networking.networkmanager.enable = true;
-  programs.firefox.enable = true;
+
+  programs = {
+    firefox.enable = true;
+  };
 }
