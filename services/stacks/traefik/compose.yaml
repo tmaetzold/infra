@@ -1,50 +1,39 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
 
 services:
-  app:
+  traefik:
+    container_name: traefik
     image: traefik:v3.6
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - letsencrypt:/letsencrypt
-      - log:/var/log
+      - /mnt/user/appdata/traefik/dynamic:/etc/traefik/dynamic
+      - /mnt/user/appdata/traefik/letsencrypt:/letsencrypt
+      - /mnt/user/appdata/traefik/log:/var/log
     networks:
-      - proxy
+      br0:
+        ipv4_address: "10.10.20.10"
+      proxy:
     environment:
       CF_API_EMAIL: "tkm89@proton.me"
-      CF_DNS_API_TOKEN_FILE: "/run/secrets/cf_dns_api_token"
-      CF_ZONE_API_TOKEN_FILE: "/run/secrets/cf_zone_api_token"
-    secrets:
-      - cf_dns_api_token
-      - cf_zone_api_token
-    configs:
-      - source: dynamic.home-assistant
-        target: /etc/traefik/dynamic/home-assistant.yaml
-      - source: dynamic.immich
-        target: /etc/traefik/dynamic/immich.yaml
-      - source: dynamic.proxmox-ve
-        target: /etc/traefik/dynamic/proxmox-ve.yaml
-      - source: dynamic.qbittorrent
-        target: /etc/traefik/dynamic/qbittorrent.yaml
-      - source: dynamic.sabnzbd
-        target: /etc/traefik/dynamic/sabnzbd.yaml
-      - source: dynamic.unraid
-        target: /etc/traefik/dynamic/unraid.yaml
+      CF_DNS_API_TOKEN: "${CF_DNS_API_TOKEN}"
+      CF_ZONE_API_TOKEN: "${CF_ZONE_API_TOKEN}"
     command:
       - "--api.dashboard=true"
       - "--api.insecure=true"
-      - "--log.level=${LOG_LEVEL}"
+      - "--log.level=INFO"
       - "--log.filepath=/var/log/traefik.log"
       - "--accesslog=true"
       - "--accesslog.filepath=/var/log/traefik-access.log"
       - "--providers.file.directory=/etc/traefik/dynamic"
       - "--providers.file.watch=true"
-      - "--providers.swarm.exposedByDefault=false"
-      - "--providers.swarm.network=proxy"
-      - "--providers.swarm.watch=true"
+      - "--providers.docker.exposedByDefault=false"
+      - "--providers.docker.network=proxy"
+      - "--providers.docker.watch=true"
       - "--entryPoints.web.address=:80"
       - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
       - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
@@ -56,48 +45,15 @@ services:
       - "--certificatesResolvers.cloudflare.acme.dnsChallenge=true"
       - "--certificatesResolvers.cloudflare.acme.dnsChallenge.provider=cloudflare"
       - "--serversTransport.insecureSkipVerify=true"
-    deploy:
-      mode: global
-      placement:
-        constraints: [node.role == manager]
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.traefik.rule=Host(`traefik.trkm.io`)"
-        - "traefik.http.services.traefik.loadBalancer.server.port=8080"
-
-volumes:
-  letsencrypt: {}
-  log: {}
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/ibracorp/unraid-templates/master/traefik/traefik.png"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8080]"
+      traefik.enable: true
+      traefik.http.routers.traefik.rule: "Host(`traefik.trkm.io`)"
+      traefik.http.services.traefik.loadBalancer.server.port: 8080
 
 networks:
+  br0:
+    external: true
   proxy:
-    driver: overlay
-    external: true
-
-secrets:
-  cf_dns_api_token:
-    name: traefik.cf_dns_api_token_v1
-    external: true
-  cf_zone_api_token:
-    name: traefik.cf_zone_api_token_v1
-    external: true
-
-configs:
-  dynamic.home-assistant:
-    name: traefik.dynamic.home-assistant_v1
-    external: true
-  dynamic.immich:
-    name: traefik.dynamic.immich_v1
-    external: true
-  dynamic.proxmox-ve:
-    name: traefik.dynamic.proxmox-ve_v1
-    external: true
-  dynamic.qbittorrent:
-    name: traefik.dynamic.qbittorrent_v1
-    external: true
-  dynamic.sabnzbd:
-    name: traefik.dynamic.sabnzbd_v1
-    external: true
-  dynamic.unraid:
-    name: traefik.dynamic.unraid_v1
     external: true
