@@ -16,3 +16,7 @@ services:
       UMASK: "022"
       TZ: "America/Chicago"
       PLEX_PASS: "yes"
+    labels:
+      net.unraid.docker.icon: "https://hotio.dev/webhook-avatars/plex.png"
+      net.unraid.docker.webui: "https://app.plex.tv"
+      net.unraid.docker.shell: "bash"
