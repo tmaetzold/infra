@@ -38,12 +38,17 @@
         # formatters
         nixfmt-rfc-style
         ruff
+
+        # clipboard
+        wl-clipboard
+        xclip
       ]
       ++ (with pkgs.lua51Packages; [
         lua
         luarocks
       ])
       ++ (with pkgs.nodePackages; [
+        nodejs
         markdownlint-cli2
         prettier
       ])
