@@ -2,13 +2,16 @@
 
 services:
   flaresolverr:
-    image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
+    image: ghcr.io/flaresolverr/flaresolverr:latest
     restart: unless-stopped
     networks:
       - pvr
     environment:
       LOG_LEVEL: "info"
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/flaresolverr.png"
+      net.unraid.docker.shell: "bash"
 
 networks:
   pvr:

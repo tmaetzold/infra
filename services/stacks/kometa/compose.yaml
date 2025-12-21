@@ -2,8 +2,8 @@
 
 services:
   kometa:
-    image: kometateam/kometa:latest
     container_name: kometa
+    image: kometateam/kometa:latest
     restart: unless-stopped
     volumes:
       - /mnt/user/appdata/kometa/config:/config
@@ -20,6 +20,9 @@ services:
       KOMETA_RADARRAPIKEY: "${RADARR_APIKEY}"
       KOMETA_SONARRURL: "${SONARR_URL}"
       KOMETA_SONARRAPIKEY: "${SONARR_APIKEY}"
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/kometa.png"
+      net.unraid.docker.shell: "bash"
 
 networks:
   pvr:

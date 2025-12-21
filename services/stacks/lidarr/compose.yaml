@@ -17,6 +17,10 @@ services:
       PGID: "100"
       UMASK: "022"
       TZ: "America/Chicago"
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/lidarr.png"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8686]"
+      net.unraid.docker.shell: "bash"
 
 networks:
   pvr:
