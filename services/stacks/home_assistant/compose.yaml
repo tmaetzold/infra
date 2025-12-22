@@ -10,6 +10,7 @@ services:
     networks:
       br0:
         ipv4_address: "10.10.20.3"
+      proxy:
     environment:
       PUID: "99"
       PGID: "100"
@@ -25,4 +26,6 @@ services:
 
 networks:
   br0:
+    external: true
+  proxy:
     external: true
