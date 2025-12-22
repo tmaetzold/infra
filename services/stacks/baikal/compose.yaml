@@ -1,28 +1,32 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
 
 services:
-  app:
+  baikal:
+    container_name: baikal
     image: ckulka/baikal:nginx
+    restart: unless-stopped
+    ports:
+      - "8079:80"
     volumes:
-      - config:/var/www/baikal/config
-      - Specific:/var/www/baikal/Specific
+      - /mnt/user/appdata/baikal/config:/var/www/baikal/config
+      - /mnt/user/appdata/baikal/Specific:/var/www/baikal/Specific
     networks:
       - net
       - proxy
-    environment:
-      BAIKAL_SKIP_CHOWN: "true"
-    deploy:
-      mode: replicated
-      replicas: 1
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.baikal.rule=Host(`dav.trkm.io`)"
-        - "traefik.http.services.baikal.loadBalancer.server.port=80"
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/fc362ea4207f0e2e5a6975ff97c3984c1a396505/webp/baikal.webp"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8079]"
+      net.unraid.docker.shell: "bash"
+      traefik.enable: true
+      traefik.http.routers.baikal.rule: "Host(`dav.trkm.io`)"
+      traefik.http.services.baikal.loadBalancer.server.port: 80
 
   db:
+    container_name: baikal_db
     image: lscr.io/linuxserver/mariadb:10.11.6
+    restart: unless-stopped
     volumes:
-      - db_config:/config
+      - /mnt/user/appdata/baikal/db/config:/config
     networks:
       - net
     environment:
@@ -32,46 +36,13 @@ services:
       TZ: "America/Chicago"
       MYSQL_DATABASE: "baikal"
       MYSQL_USER: "baikal"
-      FILE__MYSQL_PASSWORD: "/run/secrets/mysql_password"
-      FILE__MYSQL_ROOT_PASSWORD: "/run/secrets/mysql_root_password"
-    secrets:
-      - mysql_password
-      - mysql_root_password
-    deploy:
-      mode: replicated
-      replicas: 1
-
-volumes:
-  config:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=10.10.20.2,nfsvers=4
-      device: ":/mnt/user/appdata/baikal/config"
-  Specific:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=10.10.20.2,nfsvers=4
-      device: ":/mnt/user/appdata/baikal/Specific"
-  db_config:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=10.10.20.2,nfsvers=4
-      device: ":/mnt/user/appdata/baikal/db/config"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/fc362ea4207f0e2e5a6975ff97c3984c1a396505/png/mariadb.png"
+      net.unraid.docker.shell: "bash"
 
 networks:
   net:
-    driver: overlay
   proxy:
-    driver: overlay
-    external: true
-
-secrets:
-  mysql_password:
-    name: baikal.mysql_password_v1
-    external: true
-  mysql_root_password:
-    name: baikal.mysql_root_password_v1
     external: true
