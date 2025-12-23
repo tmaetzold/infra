@@ -1,0 +1,7 @@
+services:
+  lidarr:
+    labels:
+      net.unraid.docker.managed: 'composeman'
+      net.unraid.docker.icon: 'https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/lidarr.png'
+      net.unraid.docker.webui: 'http://[IP]:[PORT:8686]'
+      net.unraid.docker.shell: 'bash'

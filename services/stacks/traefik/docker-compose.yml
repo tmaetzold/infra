@@ -1,0 +1,57 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
+
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:v3.6
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /mnt/user/appdata/traefik/dynamic:/etc/traefik/dynamic
+      - /mnt/user/appdata/traefik/letsencrypt:/letsencrypt
+      - /mnt/user/appdata/traefik/log:/var/log
+    networks:
+      br0:
+        ipv4_address: "10.10.20.10"
+      proxy:
+    environment:
+      CF_API_EMAIL: "tkm89@proton.me"
+      CF_DNS_API_TOKEN: "${CF_DNS_API_TOKEN}"
+      CF_ZONE_API_TOKEN: "${CF_ZONE_API_TOKEN}"
+    command:
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--log.level=INFO"
+      - "--log.filepath=/var/log/traefik.log"
+      - "--accesslog=true"
+      - "--accesslog.filepath=/var/log/traefik-access.log"
+      - "--providers.file.directory=/etc/traefik/dynamic"
+      - "--providers.file.watch=true"
+      - "--providers.docker.exposedByDefault=false"
+      - "--providers.docker.network=proxy"
+      - "--providers.docker.watch=true"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entryPoints.websecure.address=:443"
+      - "--entryPoints.websecure.asDefault=true"
+      - "--entryPoints.websecure.http.tls.certResolver=cloudflare"
+      - "--certificatesResolvers.cloudflare.acme.email=tkm89@proton.me"
+      - "--certificatesResolvers.cloudflare.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesResolvers.cloudflare.acme.dnsChallenge=true"
+      - "--certificatesResolvers.cloudflare.acme.dnsChallenge.provider=cloudflare"
+      - "--serversTransport.insecureSkipVerify=true"
+    labels:
+      traefik.enable: true
+      traefik.http.routers.traefik.rule: "Host(`traefik.trkm.io`)"
+      traefik.http.services.traefik.loadBalancer.server.port: 8080
+
+networks:
+  br0:
+    external: true
+  proxy:
+    external: true

@@ -1,0 +1,7 @@
+services:
+  traefik:
+    labels:
+      net.unraid.docker.managed: 'composeman'
+      net.unraid.docker.icon: 'https://raw.githubusercontent.com/ibracorp/unraid-templates/master/traefik/traefik.png'
+      net.unraid.docker.webui: 'http://[IP]:[PORT:8080]'
+      net.unraid.docker.shell: 'bash'

@@ -1,0 +1,19 @@
+services:
+  radarr:
+    labels:
+      net.unraid.docker.managed: 'composeman'
+      net.unraid.docker.icon: 'https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/radarr.png'
+      net.unraid.docker.webui: 'http://[IP]:[PORT:7878]'
+      net.unraid.docker.shell: 'bash'
+  radarr_4k:
+    labels:
+      net.unraid.docker.managed: 'composeman'
+      net.unraid.docker.icon: 'https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/radarr-4k.png'
+      net.unraid.docker.webui: 'http://[IP]:[PORT:7879]'
+      net.unraid.docker.shell: 'bash'
+  radarr_anime:
+    labels:
+      net.unraid.docker.managed: 'composeman'
+      net.unraid.docker.icon: 'https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/radarr.png'
+      net.unraid.docker.webui: 'http://[IP]:[PORT:7880]'
+      net.unraid.docker.shell: 'bash'

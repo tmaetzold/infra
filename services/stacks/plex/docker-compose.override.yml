@@ -1,0 +1,7 @@
+services:
+  plex:
+    labels:
+      net.unraid.docker.managed: 'composeman'
+      net.unraid.docker.icon: 'https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/plex.png'
+      net.unraid.docker.webui: 'https://app.plex.tv'
+      net.unraid.docker.shell: 'bash'

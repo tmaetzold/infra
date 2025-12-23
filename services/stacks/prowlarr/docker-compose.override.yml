@@ -1,0 +1,7 @@
+services:
+  prowlarr:
+    labels:
+      net.unraid.docker.managed: 'composeman'
+      net.unraid.docker.icon: 'https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/prowlarr.png'
+      net.unraid.docker.webui: 'http://[IP]:[PORT:9696]'
+      net.unraid.docker.shell: 'bash'

@@ -1,0 +1,7 @@
+services:
+  home_assistant:
+    labels:
+      net.unraid.docker.managed: 'composeman'
+      net.unraid.docker.icon: 'https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/home-assistant.png'
+      net.unraid.docker.webui: 'http://[IP]:[PORT:8123]'
+      net.unraid.docker.shell: 'bash'

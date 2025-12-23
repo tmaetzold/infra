@@ -1,0 +1,25 @@
+services:
+  immich-server:
+    labels:
+      net.unraid.docker.managed: 'composeman'
+      net.unraid.docker.icon: 'https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/immich.png'
+      net.unraid.docker.webui: 'http://[IP]:[PORT:2283]'
+      net.unraid.docker.shell: 'bash'
+  immich-machine-learning:
+    labels:
+      net.unraid.docker.managed: 'composeman'
+      net.unraid.docker.icon: 'https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/immich.png'
+      net.unraid.docker.webui: ''
+      net.unraid.docker.shell: 'bash'
+  redis:
+    labels:
+      net.unraid.docker.managed: 'composeman'
+      net.unraid.docker.icon: 'https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/redis.png'
+      net.unraid.docker.webui: ''
+      net.unraid.docker.shell: 'sh'
+  database:
+    labels:
+      net.unraid.docker.managed: 'composeman'
+      net.unraid.docker.icon: 'https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/png/postgres.png'
+      net.unraid.docker.webui: ''
+      net.unraid.docker.shell: 'bash'

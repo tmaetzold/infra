@@ -1,0 +1,13 @@
+services:
+  baikal:
+    labels:
+      net.unraid.docker.managed: 'composeman'
+      net.unraid.docker.icon: 'https://raw.githubusercontent.com/homarr-labs/dashboard-icons/fc362ea4207f0e2e5a6975ff97c3984c1a396505/webp/baikal.webp'
+      net.unraid.docker.webui: 'http://[IP]:[PORT:8079]'
+      net.unraid.docker.shell: 'bash'
+  db:
+    labels:
+      net.unraid.docker.managed: 'composeman'
+      net.unraid.docker.icon: 'https://raw.githubusercontent.com/homarr-labs/dashboard-icons/fc362ea4207f0e2e5a6975ff97c3984c1a396505/png/mariadb.png'
+      net.unraid.docker.webui: ''
+      net.unraid.docker.shell: 'bash'
