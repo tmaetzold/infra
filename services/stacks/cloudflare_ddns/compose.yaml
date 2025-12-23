@@ -1,19 +1,22 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
 
 services:
-  app:
-    image: oznu/cloudflare-ddns:latest
+  cloudflare_ddns:
+    container_name: cloudflare_ddns
+    image: favonia/cloudflare-ddns:latest
+    restart: unless-stopped
+    networks:
+      br0:
+        ipv4_address: "10.10.20.254"
     environment:
-      API_KEY_FILE: "/run/secrets/cf_api_token"
+      CLOUDFLARE_API_TOKEN: "${CLOUDFLARE_API_TOKEN}"
+      DOMAINS: "trkm.io"
+      IP6_PROVIDER: "none"
       PROXIED: "true"
-      ZONE: "trkm.io"
-    secrets:
-      - cf_api_token
-    deploy:
-      mode: replicated
-      replicas: 1
+    labels:
+      net.unraid.docker.icon: "https://hotio.dev/webhook-avatars/cloudflareddns.png"
+      net.unraid.docker.shell: "bash"
 
-secrets:
-  cf_api_token:
-    name: cloudflare_ddns.cf_api_token_v1
+networks:
+  br0:
     external: true
