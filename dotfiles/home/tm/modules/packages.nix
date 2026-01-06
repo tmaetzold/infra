@@ -7,6 +7,11 @@
       lazydocker
       lazygit
       pure-prompt
+
+      # programming
+      cargo
+      R
+      rustc
       uv
 
       # infra depends

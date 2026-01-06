@@ -17,6 +17,9 @@
         ripgrep
         tree-sitter
 
+        # Mason.nvim
+        unzip
+
         # conform.nvim
         fishMinimal
         github-markdown-toc-go
@@ -29,6 +32,7 @@
 
         # language servers
         copilot-language-server
+        nil
         rust-analyzer
         yaml-language-server
 
@@ -38,6 +42,7 @@
         # formatters
         nixfmt-rfc-style
         ruff
+        rustfmt
 
         # clipboard
         wl-clipboard
