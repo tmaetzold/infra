@@ -4,6 +4,7 @@
   home = {
     packages = with pkgs; [
       claude-code
+      github-copilot-cli
       lazydocker
       lazygit
       pure-prompt
