@@ -1,4 +1,4 @@
-_:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -10,4 +10,10 @@ _:
   programs = {
     firefox.enable = true;
   };
+
+  environment.systemPackages = with pkgs; [
+    # themes
+    nordic
+    papirus-nord
+  ];
 }

@@ -32,6 +32,22 @@
             }
           ];
         };
+
+        trkm-gaming = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./hosts/trkm-gaming.nix
+
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.tm = import ../dotfiles/home/tm/home.nix;
+              };
+            }
+          ];
+        };
       };
     };
 }

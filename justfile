@@ -13,3 +13,6 @@ mod ansible
 
 # dotfiles module
 mod dotfiles
+
+# nixos module
+mod nixos
