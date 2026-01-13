@@ -12,8 +12,6 @@ _:
     stateVersion = "25.05";
   };
 
-  nixpkgs.config.allowUnfree = true;
-
   programs.git = {
     enable = true;
     userName = "Trent Maetzold";
