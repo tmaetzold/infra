@@ -1,7 +1,5 @@
 #!/usr/bin/env just --justfile
 
-home-manager-cmd := "home-manager --extra-experimental-features 'nix-command flakes'"
-
 # show available commands
 [private]
 default:
@@ -9,5 +7,5 @@ default:
 
 # switch Home Manager profile
 switch profile:
-    @echo "Enabling nix experimental features and switching to profile: {{ profile }}"
+    @echo "Switching to Home Manager profile: {{ profile }}"
     @NIX_CONFIG="experimental-features = nix-command flakes" home-manager switch --flake .#{{ profile }}
