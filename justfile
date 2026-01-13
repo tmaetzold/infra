@@ -1,5 +1,6 @@
 #!/usr/bin/env just --justfile
 
+# show available commands
 [private]
 default:
     @just --list
@@ -8,10 +9,7 @@ default:
 sync:
     @uv sync
 
-# ansible module
-mod ansible
-
-# dotfiles module
+# dotfiles module (Home Manager)
 mod dotfiles
 
 # nixos module
