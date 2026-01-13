@@ -31,8 +31,8 @@
         ansible
         just
       ]
-      ++ lib.optionals osConfig.virtualisation.docker.enable [ distrobox ]
-      ++ lib.optionals osConfig.services.xserver.enable (
+      ++ lib.optionals (osConfig ? virtualisation.docker.enable && osConfig.virtualisation.docker.enable) (with pkgs; [ distrobox ])
+      ++ lib.optionals (osConfig ? services.xserver.enable && osConfig.services.xserver.enable) (
         with pkgs;
         [
           # GUI applications

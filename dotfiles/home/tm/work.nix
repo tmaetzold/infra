@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+_:
 
 {
   imports = [
@@ -10,6 +10,10 @@
     username = "tmaetzold_gcp";
     homeDirectory = "/home/tmaetzold_gcp";
     stateVersion = "25.05";
+    sessionVariables = {
+      NIX_SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
+      SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
+    };
   };
 
   nixpkgs.config.allowUnfree = true;
