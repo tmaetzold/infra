@@ -22,6 +22,11 @@
         rustc
         uv
 
+        # formatters
+        nixfmt
+        ruff
+        rustfmt
+
         # infra depends
         ansible
         just

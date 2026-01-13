@@ -39,11 +39,6 @@
         # linters
         statix
 
-        # formatters
-        nixfmt-rfc-style
-        ruff
-        rustfmt
-
         # clipboard
         wl-clipboard
         xclip
