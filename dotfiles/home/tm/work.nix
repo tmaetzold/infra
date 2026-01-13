@@ -29,7 +29,11 @@ _:
 
   programs.git = {
     enable = true;
-    userName = "Trent Maetzold";
-    userEmail = "trent.maetzold@gardacp.com";
+    settings = {
+      user = {
+        name = "Trent Maetzold";
+        email = "trent.maetzold@gardacp.com";
+      };
+    };
   };
 }

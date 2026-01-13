@@ -14,8 +14,12 @@ _:
 
   programs.git = {
     enable = true;
-    userName = "Trent Maetzold";
-    userEmail = "trent@maetzold.co";
+    settings = {
+      user = {
+        name = "Trent Maetzold";
+        email = "trent@maetzold.co";
+      };
+    };
   };
 
   dconf.settings = {
