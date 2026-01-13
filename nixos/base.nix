@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   # Bootloader.
@@ -43,14 +48,17 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    curl
-    gcc
-    gnumake
-    htop
-    unzip
-    wget
-  ];
+  environment.systemPackages =
+    with pkgs;
+    [
+      curl
+      gcc
+      gnumake
+      htop
+      unzip
+      wget
+    ]
+    ++ lib.optionals config.services.xserver.enable (with pkgs; [ citrix_workspace ]);
 
   virtualisation.docker = {
     enable = true;

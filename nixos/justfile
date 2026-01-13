@@ -7,13 +7,12 @@ default:
 
 # check configuration validity (dry-run)
 check hostname=`hostname -s`:
-    @sudo nixos-rebuild dry-build --flake .#{{ hostname }}
+    sudo nixos-rebuild dry-build --flake .#{{ hostname }}
 
 # build a specific host configuration
 build hostname=`hostname -s`:
-    @sudo nixos-rebuild switch --flake .#{{ hostname }}
+    sudo nixos-rebuild switch --flake .#{{ hostname }}
 
 # rebuild the current host
 rebuild:
     @just build $(hostname)
-

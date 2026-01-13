@@ -18,20 +18,4 @@
   };
 
   programs.zsh.enable = true;
-
-  environment.systemPackages =
-    with pkgs;
-    lib.optionals config.virtualisation.docker.enable [ distrobox ]
-    ++ lib.optionals config.services.xserver.enable (
-      with pkgs;
-      [
-        # GUI applications
-        citrix_workspace
-        ghostty
-
-        # 3D printing and design
-        orca-slicer
-        blender
-      ]
-    );
 }

@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+_:
 
 {
   users.users.jm = {
@@ -11,8 +6,4 @@
     description = "Justine Maetzold";
     extraGroups = [ "networkmanager" ];
   };
-
-  environment.systemPackages =
-    with pkgs;
-    lib.optionals config.services.xserver.enable [ citrix-workspace ];
 }

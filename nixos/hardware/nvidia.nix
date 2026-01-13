@@ -12,7 +12,7 @@
 
   hardware = {
     nvidia = {
-      modesetting.enable = true;
+      modesetting.enable = lib.mkDefault true;
       powerManagement = {
         enable = lib.mkDefault false;
         finegrained = lib.mkDefault false;
