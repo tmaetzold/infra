@@ -12,6 +12,7 @@
       [
         claude-code
         github-copilot-cli
+        just
         lazydocker
         lazygit
         pure-prompt
@@ -26,10 +27,6 @@
         nixfmt
         ruff
         rustfmt
-
-        # infra depends
-        ansible
-        just
       ]
       ++ lib.optionals (
         osConfig ? virtualisation.docker.enable && osConfig.virtualisation.docker.enable
