@@ -3,14 +3,17 @@ _:
 {
   imports = [ ./neovim.nix ];
 
-  xdg.configFile = {
-    "ghostty/config".text = ''
-      theme = catppuccin-mocha
-      font-size = 10
-      clipboard-read = allow
-      clipboard-write = allow
-      clipboard-paste-protection = false
-    '';
+  home = {
+    shellAliases = {
+      gg = "lazygit";
+      hq = "harlequin";
+      nb = "euporie-notebook";
+      vim = "nvim";
+    };
+    sessionVariables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+    };
   };
 
   programs = {
@@ -45,15 +48,16 @@ _:
             [[ -f "$config" ]] && source "$config"
         done
       '';
-      shellAliases = {
-        lg = "lazygit";
-        nb = "euporie-notebook";
-        vim = "nvim";
-      };
-      sessionVariables = {
-        EDITOR = "nvim";
-        VISUAL = "nvim";
-      };
     };
+  };
+
+  xdg.configFile = {
+    "ghostty/config".text = ''
+      theme = catppuccin-mocha
+      font-size = 10
+      clipboard-read = allow
+      clipboard-write = allow
+      clipboard-paste-protection = false
+    '';
   };
 }
