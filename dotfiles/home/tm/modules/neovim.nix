@@ -59,6 +59,7 @@
       ++ (with pkgs.python3Packages; [
         pip
         pynvim
-      ]);
+      ])
+      ++ (with pkgs.rPackages; [ languageserver ]);
   };
 }
