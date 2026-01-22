@@ -35,6 +35,7 @@ return {
             },
           },
         },
+        r_language_server = { mason = false },
       },
     },
   },
