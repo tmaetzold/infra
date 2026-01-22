@@ -22,10 +22,14 @@ _:
     };
     tmux = {
       enable = true;
+      baseIndex = 1;
       clock24 = true;
+      focusEvents = true;
+      keyMode = "vi";
+      mouse = true;
+      terminal = "tmux-256color";
       extraConfig = ''
-        set-option -g focus-events on
-        set-option -ga terminal-features '*:RGB'
+        set -ga terminal-features '*:RGB'
       '';
     };
     zsh = {
