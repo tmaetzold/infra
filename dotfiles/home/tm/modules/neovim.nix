@@ -30,6 +30,10 @@
         mermaid-cli
         tectonic
 
+        # vim-dadbod-ui
+        oracle-instantclient
+        postgresql
+
         # language servers
         copilot-language-server
         nil
