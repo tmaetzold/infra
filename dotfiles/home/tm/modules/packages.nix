@@ -13,6 +13,7 @@
         claude-code
         github-copilot-cli
         harlequin
+        htop
         just
         lazydocker
         lazygit
