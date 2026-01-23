@@ -12,8 +12,6 @@ _:
       };
     };
 
-    printing.enable = true;
-
     # Enable sound with pipewire.
     pulseaudio.enable = false;
     pipewire = {

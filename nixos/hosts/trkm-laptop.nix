@@ -6,8 +6,9 @@ _:
     ../hardware/optimus.nix
     ../base.nix
     ../sites/orono.nix
-    ../roles/tailscale.nix
     ../roles/de/cinnamon.nix
+    ../roles/tailscale.nix
+    ../roles/printing.nix
     ../users/tm.nix
     ../users/jm.nix
   ];
