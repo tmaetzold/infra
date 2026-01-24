@@ -16,3 +16,7 @@ build hostname=`hostname -s`:
 # rebuild the current host
 rebuild:
     @just build $(hostname)
+
+# deploy to a remote host (builds remotely to avoid signature issues)
+deploy hostname target:
+    nixos-rebuild switch --flake .#{{ hostname }} --target-host {{ target }} --build-host {{ target }} --use-remote-sudo
