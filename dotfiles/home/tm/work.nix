@@ -10,7 +10,11 @@
     username = "tmaetzold_gcp";
     homeDirectory = "/home/tmaetzold_gcp";
     stateVersion = "25.05";
-    packages = with pkgs; [ jiratui ];
+    packages = with pkgs; [
+      bitbucket-cli
+      jira-cli-go
+      jiratui
+    ];
     shellAliases = {
       jt = "jiratui ui";
     };
