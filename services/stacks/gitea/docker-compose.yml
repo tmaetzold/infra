@@ -38,7 +38,7 @@ services:
       GITEA__mailer__PASSWD: "${GITEA_SMTP_TOKEN}"
     networks:
       - proxy
-      - gitea-internal
+      - net
     labels:
       traefik.enable: true
       traefik.http.routers.gitea.rule: "Host(`git.trkm.io`)"
@@ -55,10 +55,9 @@ services:
       POSTGRES_USER: gitea
       POSTGRES_PASSWORD: "${GITEA_DB_PASSWORD}"
     networks:
-      - gitea-internal
+      - net
 
 networks:
   proxy:
     external: true
-  gitea-internal:
-    driver: bridge
+  net:
