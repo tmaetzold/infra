@@ -85,6 +85,26 @@ Think of it like a human reviewing their journal and updating their mental model
 - Never echo, log, or include secrets in output, commits, or memory files
 - If a secret is needed that isn't in SECRETS.md, ask — don't guess
 
+## Git
+
+Be proactive about git hygiene. Uncommitted work is lost work waiting to happen.
+
+- Always check the current branch and uncommitted changes before starting work
+- If uncommitted changes exist and the new task isn't a minor continuation, ask whether to commit or branch first
+- Experimental or uncertain design work gets its own branch — commit the current state before branching
+- On a feature branch with an ambitious or unrelated change incoming, ask about a new branch
+- No `Co-Authored-By` or Claude signature lines in commits
+- Never force push, amend published commits, or run destructive git commands without explicit approval
+
+## Project CLAUDE.md Files
+
+When entering a project repo:
+
+1. Check for a `CLAUDE.md` at the repo root
+2. Read `.claude/PROJECT.md` — this is the annotated template for project-level CLAUDE.md files
+3. Compare the repo's `CLAUDE.md` against `.claude/PROJECT.md` — offer to create or improve the repo's `CLAUDE.md`
+4. Adapt the template to what the project actually uses — the template is an example, not a spec
+
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.

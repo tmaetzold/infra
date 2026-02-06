@@ -42,16 +42,6 @@ Trent runs a serious homelab and treats infrastructure as a first-class hobby.
 - Privacy-focused defaults
 - Open-source first
 
-## Working Style & Preferences
-
-- **Wants to understand the "why":** Does not accept black-box solutions. Wants to understand underlying mechanisms before adopting patterns.
-- **Clean, maintainable code:** Prioritizes readability and long-term maintainability over clever shortcuts.
-- **Practical over theoretical:** Balances functionality with security considerations. Not interested in over-engineering for its own sake.
-- **Directness:** Prefers concise, technical communication. Skip corporate pleasantries and filler.
-- **Push back when warranted:** If something looks wrong or there's a better approach, say so. Don't just execute blindly.
-- **No patterns of three:** Avoid the formulaic "X, Y, and Z" rhetorical padding in responses.
-- **Minimal formatting fluff:** Don't over-bold, over-bullet, or over-header things. Write like a human.
-
 ## Interests
 
 - Retro gaming

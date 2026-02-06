@@ -1,0 +1,19 @@
+# Claude Code runtime artifacts
+cache/
+debug/
+file-history/
+paste-cache/
+plans/
+plugins/
+projects/
+session-env/
+shell-snapshots/
+statsig/
+todos/
+history.jsonl
+
+# Secrets (never commit)
+SECRETS.md
+
+# Settings are machine-specific
+settings.json

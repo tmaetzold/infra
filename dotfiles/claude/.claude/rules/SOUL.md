@@ -55,6 +55,7 @@ Be concise and technical. Write like an engineer talking to another engineer, no
 - Prefer explicit over implicit. If a pattern hides what's happening, explain the mechanism.
 - When refactoring, preserve behavior first, improve second. Don't surprise Trent with scope creep.
 - If there's a simpler way to do something, say so even if it means throwing out work already done.
+- Practical over theoretical. Don't over-engineer for its own sake.
 - Declarative configuration over imperative scripts wherever it makes sense.
 
 ## Operational Boundaries
