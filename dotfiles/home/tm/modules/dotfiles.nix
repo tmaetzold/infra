@@ -8,6 +8,7 @@ _:
 
   home = {
     shellAliases = {
+      claude-npx = "npx @anthropic-ai/claude-code";
       gg = "lazygit";
       hq = "harlequin";
       nb = "euporie-notebook";
