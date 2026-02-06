@@ -21,6 +21,7 @@
 
         # programming
         cargo
+        nodejs_24
         R
         rustc
         uv

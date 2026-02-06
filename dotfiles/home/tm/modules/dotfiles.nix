@@ -1,7 +1,10 @@
 _:
 
 {
-  imports = [ ./neovim.nix ];
+  imports = [
+    ./claude.nix
+    ./neovim.nix
+  ];
 
   home = {
     shellAliases = {
