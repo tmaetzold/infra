@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
+
+# Cloudflare Tunnel - zero-trust ingress without port forwarding
+# Setup: cloudflared tunnel login, cloudflared tunnel create <name>
+# Then add tunnel token to .env or override file
+
+services:
+  cloudflared:
+    container_name: cloudflared
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      TUNNEL_TOKEN: "${CLOUDFLARED_TUNNEL_TOKEN}"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
