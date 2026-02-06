@@ -5,6 +5,8 @@ services:
     container_name: gitea
     image: gitea/gitea:latest
     restart: unless-stopped
+    depends_on:
+      - gitea-db
     ports:
       - "3000:3000"   # Web UI
       - "2222:22"     # SSH
@@ -15,18 +17,48 @@ services:
     environment:
       USER_UID: 1000
       USER_GID: 1000
-      GITEA__database__DB_TYPE: sqlite3
+      # Database
+      GITEA__database__DB_TYPE: postgres
+      GITEA__database__HOST: gitea-db:5432
+      GITEA__database__NAME: gitea
+      GITEA__database__USER: gitea
+      GITEA__database__PASSWD: "${GITEA_DB_PASSWORD}"
+      # Server
       GITEA__server__ROOT_URL: "https://git.trkm.io"
       GITEA__server__SSH_DOMAIN: "git.trkm.io"
       GITEA__server__SSH_PORT: 2222
       GITEA__server__SSH_LISTEN_PORT: 22
+      # Mailer (ProtonMail)
+      GITEA__mailer__ENABLED: "true"
+      GITEA__mailer__FROM: "${GITEA_SMTP_FROM:-git@trkm.io}"
+      GITEA__mailer__PROTOCOL: "smtp+starttls"
+      GITEA__mailer__SMTP_ADDR: "smtp.protonmail.ch"
+      GITEA__mailer__SMTP_PORT: "587"
+      GITEA__mailer__USER: "${GITEA_SMTP_USER:-git@trkm.io}"
+      GITEA__mailer__PASSWD: "${GITEA_SMTP_TOKEN}"
     networks:
       - proxy
+      - gitea-internal
     labels:
       traefik.enable: true
       traefik.http.routers.gitea.rule: "Host(`git.trkm.io`)"
       traefik.http.services.gitea.loadBalancer.server.port: 3000
 
+  gitea-db:
+    container_name: gitea-db
+    image: postgres:16-alpine
+    restart: unless-stopped
+    volumes:
+      - /mnt/user/appdata/gitea/postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: gitea
+      POSTGRES_USER: gitea
+      POSTGRES_PASSWORD: "${GITEA_DB_PASSWORD}"
+    networks:
+      - gitea-internal
+
 networks:
   proxy:
     external: true
+  gitea-internal:
+    driver: bridge
