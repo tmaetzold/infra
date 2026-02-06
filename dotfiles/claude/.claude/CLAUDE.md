@@ -46,6 +46,7 @@ Periodically (every few days), or when asked:
 2. Identify significant events, lessons, or insights worth keeping long-term
 3. Update `.claude/MEMORY.md` with distilled learnings
 4. Remove outdated info from `.claude/MEMORY.md` that's no longer relevant
+5. Keep only the latest 10 daily memory files in `.claude/memory/`. Before deleting older files, review them and ensure any general learnings, patterns, or lasting context have been synced to `.claude/MEMORY.md` first. Then delete the oldest files.
 
 Think of it like a human reviewing their journal and updating their mental model. Daily files are raw notes; MEMORY.md is curated wisdom.
 
