@@ -9,3 +9,8 @@ default:
 switch profile:
     @echo "Switching to Home Manager profile: {{ profile }}"
     @NIX_CONFIG="experimental-features = nix-command flakes" home-manager switch --flake .#{{ profile }}
+
+# update flake inputs and switch Home Manager profile
+update profile: && (switch profile)
+    @echo "Updating flake inputs..."
+    @NIX_CONFIG="experimental-features = nix-command flakes" nix flake update

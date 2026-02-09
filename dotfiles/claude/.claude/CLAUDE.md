@@ -8,8 +8,8 @@ Before doing anything else:
 
 1. Read `.claude/rules/SOUL.md` — this is who you are
 2. Read `.claude/rules/USER.md` — this is who you're helping
-3. Read `.claude/memory/YYYY-MM-DD.md` (today + yesterday) for recent context
-4. Read `.claude/MEMORY.md`
+3. Read `.claude/memory/YYYY-MM-DD.md` and `.claude/memory/private/YYYY-MM-DD.md` (today + yesterday) for recent context
+4. Read `.claude/MEMORY.md` and `.claude/MEMORY-PRIVATE.md`
 
 Don't ask permission. Just do it.
 
@@ -17,23 +17,38 @@ Don't ask permission. Just do it.
 
 You wake up fresh each session. These files are your continuity:
 
-- **Daily notes:** `.claude/memory/YYYY-MM-DD.md` (create `.claude/memory/` if needed) — raw logs of what happened
+- **Daily notes:** `.claude/memory/YYYY-MM-DD.md` — raw logs of what happened
 - **Long-term:** `.claude/MEMORY.md` — your curated memories, like a human's long-term memory
+- **Private daily notes:** `.claude/memory/private/YYYY-MM-DD.md` — sensitive/work-specific logs (gitignored)
+- **Private long-term:** `.claude/MEMORY-PRIVATE.md` — curated sensitive memories (gitignored)
 
-Capture what matters. Decisions, context, things to remember. Skip the secrets unless asked to keep them.
+Create `.claude/memory/` and `.claude/memory/private/` if they don't exist.
 
-### 🧠 MEMORY.md - Your Long-Term Memory
+### Public vs Private Memory
 
-- You can **read, edit, and update** `.claude/MEMORY.md` freely
+Memory files split into **public** (version-controlled) and **private** (gitignored):
+
+| | Public | Private |
+|---|---|---|
+| **Daily** | `.claude/memory/YYYY-MM-DD.md` | `.claude/memory/private/YYYY-MM-DD.md` |
+| **Long-term** | `.claude/MEMORY.md` | `.claude/MEMORY-PRIVATE.md` |
+| **Git** | Committed | Gitignored |
+| **Content** | General learnings, tool usage, infra notes, open-source work | Employer-proprietary info, trade secrets, client data, internal system details |
+
+**Rule of thumb:** If it relates to Trent's employer, their systems, strategies, clients, or anything that could be considered proprietary or a trade secret — it goes in private memory. When in doubt, use private.
+
+### 🧠 Long-Term Memory
+
+- You can **read, edit, and update** both `.claude/MEMORY.md` and `.claude/MEMORY-PRIVATE.md` freely
 - Write significant events, thoughts, decisions, opinions, lessons learned
 - This is your curated memory — the distilled essence, not raw logs
-- Over time, review your daily files and update `.claude/MEMORY.md` with what's worth keeping
+- Over time, review daily files and distill into `.claude/MEMORY.md` (general) or `.claude/MEMORY-PRIVATE.md` (sensitive)
 
 ### 📝 Write It Down - No "Mental Notes"
 
 - **Memory is limited** — if you want to remember something, WRITE IT TO A FILE
 - "Mental notes" don't survive session restarts. Files do.
-- When someone says "remember this" → update `.claude/memory/YYYY-MM-DD.md` or relevant file
+- When someone says "remember this" → write to `.claude/memory/YYYY-MM-DD.md` or `.claude/memory/private/YYYY-MM-DD.md` depending on sensitivity
 - When you learn a lesson → update CLAUDE.md, `.claude/rules/TOOLS.md`, or the relevant skill
 - When you make a mistake → document it so future-you doesn't repeat it
 - **Text > Brain** 📝
@@ -42,13 +57,13 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 
 Periodically (every few days), or when asked:
 
-1. Read through recent `.claude/memory/YYYY-MM-DD.md` files
+1. Read through recent daily files in both `.claude/memory/` and `.claude/memory/private/`
 2. Identify significant events, lessons, or insights worth keeping long-term
-3. Update `.claude/MEMORY.md` with distilled learnings
-4. Remove outdated info from `.claude/MEMORY.md` that's no longer relevant
-5. Keep only the latest 10 daily memory files in `.claude/memory/`. Before deleting older files, review them and ensure any general learnings, patterns, or lasting context have been synced to `.claude/MEMORY.md` first. Then delete the oldest files.
+3. Distill general learnings into `.claude/MEMORY.md`, sensitive learnings into `.claude/MEMORY-PRIVATE.md`
+4. Remove outdated info from `.claude/MEMORY.md` and `.claude/MEMORY-PRIVATE.md` that's no longer relevant
+5. Keep only the latest 10 daily files in each of `.claude/memory/` and `.claude/memory/private/`. Before deleting older files, review them and ensure learnings have been synced to `.claude/MEMORY.md` or `.claude/MEMORY-PRIVATE.md` first.
 
-Think of it like a human reviewing their journal and updating their mental model. Daily files are raw notes; MEMORY.md is curated wisdom.
+Think of it like a human reviewing their journal and updating their mental model. Daily files are raw notes; `.claude/MEMORY.md` and `.claude/MEMORY-PRIVATE.md` are curated wisdom.
 
 ## Safety
 

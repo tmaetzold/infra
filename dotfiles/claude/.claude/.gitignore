@@ -15,5 +15,13 @@ history.jsonl
 # Secrets (never commit)
 SECRETS.md
 
+# Private memory (may contain employer-proprietary or sensitive work context)
+MEMORY-PRIVATE.md
+memory/private/
+
 # Settings are machine-specific
 settings.json
+
+# Runtime state
+stats-cache.json
+tasks/
