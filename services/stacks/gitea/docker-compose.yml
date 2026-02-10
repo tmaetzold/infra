@@ -33,11 +33,11 @@ services:
       GITEA__database__PASSWD: "${GITEA_DB_PASSWORD}"
       # Mailer (ProtonMail)
       GITEA__mailer__ENABLED: "true"
-      GITEA__mailer__FROM: "${GITEA_SMTP_FROM:}"
+      GITEA__mailer__FROM: "${GITEA_SMTP_FROM}"
       GITEA__mailer__PROTOCOL: "smtp+starttls"
       GITEA__mailer__SMTP_ADDR: "smtp.protonmail.ch"
       GITEA__mailer__SMTP_PORT: "587"
-      GITEA__mailer__USER: "${GITEA_SMTP_USER:}"
+      GITEA__mailer__USER: "${GITEA_SMTP_USER}"
       GITEA__mailer__PASSWD: "${GITEA_SMTP_TOKEN}"
     labels:
       traefik.enable: true
