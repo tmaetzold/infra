@@ -14,31 +14,31 @@ services:
       - /mnt/user/appdata/gitea/data:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+      - net
     environment:
       USER_UID: 1000
       USER_GID: 1000
+      # Server
+      GITEA__server__ROOT_URL: "https://git.trkm.io"
+      GITEA__server__SSH_DOMAIN: "git.trkm.io"
+      GITEA__server__SSH_PORT: 2222
+      GITEA__server__SSH_LISTEN_PORT: 22
       # Database
       GITEA__database__DB_TYPE: postgres
       GITEA__database__HOST: gitea-db:5432
       GITEA__database__NAME: gitea
       GITEA__database__USER: gitea
       GITEA__database__PASSWD: "${GITEA_DB_PASSWORD}"
-      # Server
-      GITEA__server__ROOT_URL: "https://git.trkm.io"
-      GITEA__server__SSH_DOMAIN: "git.trkm.io"
-      GITEA__server__SSH_PORT: 2222
-      GITEA__server__SSH_LISTEN_PORT: 22
       # Mailer (ProtonMail)
       GITEA__mailer__ENABLED: "true"
-      GITEA__mailer__FROM: "${GITEA_SMTP_FROM:-git@trkm.io}"
+      GITEA__mailer__FROM: "${GITEA_SMTP_FROM:}"
       GITEA__mailer__PROTOCOL: "smtp+starttls"
       GITEA__mailer__SMTP_ADDR: "smtp.protonmail.ch"
       GITEA__mailer__SMTP_PORT: "587"
-      GITEA__mailer__USER: "${GITEA_SMTP_USER:-git@trkm.io}"
+      GITEA__mailer__USER: "${GITEA_SMTP_USER:}"
       GITEA__mailer__PASSWD: "${GITEA_SMTP_TOKEN}"
-    networks:
-      - proxy
-      - net
     labels:
       traefik.enable: true
       traefik.http.routers.gitea.rule: "Host(`git.trkm.io`)"
