@@ -6,9 +6,7 @@ ENV PATH="/root/.bun/bin:${PATH}"
 
 RUN corepack enable
 
-WORKDIR /app
-
-# Install apt packages explicitly (no env var)
+# Install apt packages
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
       git \
@@ -22,8 +20,7 @@ RUN apt-get update && \
       openssh-client \
       ca-certificates \
       gnupg \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Docker CLI (for DinD communication)
 RUN install -m 0755 -d /etc/apt/keyrings && \
@@ -32,28 +29,23 @@ RUN install -m 0755 -d /etc/apt/keyrings && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable" > /etc/apt/sources.list.d/docker.list && \
     apt-get update && \
     apt-get install -y --no-install-recommends docker-ce-cli && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
-COPY ui/package.json ./ui/package.json
-COPY patches ./patches
-COPY scripts ./scripts
+# Clone and build OpenClaw
+WORKDIR /app
+RUN git clone --depth 1 https://github.com/openclaw/openclaw.git .
 
 RUN pnpm install --frozen-lockfile
 
-COPY . .
 RUN OPENCLAW_A2UI_SKIP_MISSING=1 pnpm build
-# Force pnpm for UI build (Bun may fail on ARM/Synology architectures)
 ENV OPENCLAW_PREFER_PNPM=1
 RUN pnpm ui:build
 
 ENV NODE_ENV=production
 
-# Allow non-root user to write temp files during runtime/tests.
+# Allow non-root user to write temp files
 RUN chown -R node:node /app
 
-# Security hardening: Run as non-root user
 USER node
 
-CMD ["node", "openclaw.mjs", "gateway", "--allow-unconfigured"]
+CMD ["node", "openclaw.mjs", "gateway", "--allow-unconfigured", "--bind", "lan"]
