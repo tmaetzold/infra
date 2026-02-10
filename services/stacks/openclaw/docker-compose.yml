@@ -44,8 +44,9 @@ services:
       - dind
       - protonmail-bridge
     volumes:
-      - /mnt/user/appdata/openclaw/config:/home/node/.openclaw
-      - /mnt/user/appdata/openclaw/workspace:/home/node/.openclaw/workspace
+      - /mnt/user/repos/bishop:/home/node/.openclaw
+      - /mnt/user/repos/infra:/home/node/.openclaw/repos/infra
+      - /mnt/user/appdata/openclaw/certs:/certs/client:ro
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
