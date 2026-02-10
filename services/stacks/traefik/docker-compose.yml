@@ -50,6 +50,16 @@ services:
       traefik.http.routers.traefik.rule: "Host(`traefik.trkm.io`)"
       traefik.http.services.traefik.loadBalancer.server.port: 8080
 
+  traefik-tunnel:
+    container_name: traefik-tunnel
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    networks:
+      - proxy
+    environment:
+      TUNNEL_TOKEN: "${CLOUDFLARED_TUNNEL_TOKEN}"
+    command: tunnel run
+
 networks:
   br0:
     external: true

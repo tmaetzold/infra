@@ -1,0 +1,91 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
+
+# Stack: openclaw
+# Description: OpenClaw AI assistant with Docker-in-Docker and ProtonMail Bridge
+
+services:
+  openclaw:
+    container_name: openclaw
+    build:
+      context: https://github.com/openclaw/openclaw.git
+      dockerfile_inline: |
+        FROM node:22-bookworm
+        RUN curl -fsSL https://bun.sh/install | bash
+        ENV PATH="/root/.bun/bin:${PATH}"
+        RUN corepack enable
+        WORKDIR /app
+        RUN apt-get update && \
+            DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+              git vim curl wget jq \
+              python3 python3-pip python3-venv \
+              openssh-client ca-certificates gnupg \
+            && apt-get clean && rm -rf /var/lib/apt/lists/*
+        RUN install -m 0755 -d /etc/apt/keyrings && \
+            curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc && \
+            chmod a+r /etc/apt/keyrings/docker.asc && \
+            echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable" > /etc/apt/sources.list.d/docker.list && \
+            apt-get update && apt-get install -y --no-install-recommends docker-ce-cli && \
+            apt-get clean && rm -rf /var/lib/apt/lists/*
+        COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+        COPY ui/package.json ./ui/package.json
+        COPY patches ./patches
+        COPY scripts ./scripts
+        RUN pnpm install --frozen-lockfile
+        COPY . .
+        RUN OPENCLAW_A2UI_SKIP_MISSING=1 pnpm build
+        ENV OPENCLAW_PREFER_PNPM=1
+        RUN pnpm ui:build
+        ENV NODE_ENV=production
+        RUN chown -R node:node /app
+        USER node
+        CMD ["node", "openclaw.mjs", "gateway", "--allow-unconfigured", "--bind", "lan"]
+    restart: unless-stopped
+    depends_on:
+      - dind
+      - protonmail-bridge
+    volumes:
+      - /mnt/user/appdata/openclaw/config:/home/node/.openclaw
+      - /mnt/user/appdata/openclaw/workspace:/home/node/.openclaw/workspace
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+      - net
+    environment:
+      TZ: "America/Chicago"
+      DOCKER_HOST: "tcp://dind:2376"
+      DOCKER_TLS_VERIFY: "1"
+      DOCKER_CERT_PATH: "/certs/client"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY}"
+      OPENCLAW_GATEWAY_TOKEN: "${OPENCLAW_GATEWAY_TOKEN}"
+    labels:
+      traefik.enable: true
+      traefik.http.routers.openclaw.rule: "Host(`claw.trkm.io`)"
+      traefik.http.services.openclaw.loadBalancer.server.port: 18789
+
+  dind:
+    container_name: openclaw-dind
+    image: docker:dind
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - /mnt/user/appdata/openclaw/dind:/var/lib/docker
+      - /mnt/user/appdata/openclaw/certs:/certs
+    networks:
+      - net
+    environment:
+      DOCKER_TLS_CERTDIR: "/certs"
+
+  protonmail-bridge:
+    container_name: openclaw-protonmail
+    image: shenxn/protonmail-bridge:latest
+    restart: unless-stopped
+    volumes:
+      - /mnt/user/appdata/openclaw/protonmail:/root
+    networks:
+      - net
+
+networks:
+  proxy:
+    external: true
+  net:
