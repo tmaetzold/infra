@@ -1,4 +1,18 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
+# 
+# Headscale - Self-hosted Tailscale control server
+# 
+# Initial setup:
+#   1. Copy config/headscale/* to /mnt/user/appdata/headscale/
+#   2. docker compose up -d
+#   3. Create a user: docker exec headscale headscale users create trent
+#   4. Register nodes via auth URL or pre-auth keys
+#
+# Useful commands:
+#   docker exec headscale headscale users list
+#   docker exec headscale headscale nodes list
+#   docker exec headscale headscale preauthkeys create --user trent --reusable --expiration 24h
+#   docker exec headscale headscale nodes register --user trent --key nodekey:xxx
 
 services:
   headscale:
@@ -9,19 +23,15 @@ services:
     volumes:
       - /mnt/user/appdata/headscale/config:/etc/headscale
       - /mnt/user/appdata/headscale/data:/var/lib/headscale
+      - /var/run/headscale:/var/run/headscale
     networks:
       - proxy
     labels:
       traefik.enable: true
-      traefik.http.routers.headscale.rule: "Host(`hs.trkm.io`)"
+      traefik.http.routers.headscale.rule: Host(`hs.trkm.io`)
+      traefik.http.routers.headscale.entrypoints: websecure
       traefik.http.services.headscale.loadBalancer.server.port: 8080
-      # GRPC for headscale API
-      traefik.http.routers.headscale-grpc.rule: "Host(`hs.trkm.io`) && PathPrefix(`/headscale.v1`)"
-      traefik.http.routers.headscale-grpc.service: headscale-grpc
-      traefik.http.services.headscale-grpc.loadBalancer.server.port: 50443
-      traefik.http.services.headscale-grpc.loadBalancer.server.scheme: h2c
 
-  # Optional: Web UI for headscale
   headscale-ui:
     container_name: headscale-ui
     image: ghcr.io/gurucomputing/headscale-ui:latest
@@ -30,7 +40,8 @@ services:
       - proxy
     labels:
       traefik.enable: true
-      traefik.http.routers.headscale-ui.rule: "Host(`hs.trkm.io`) && PathPrefix(`/web`)"
+      traefik.http.routers.headscale-ui.rule: Host(`hs.trkm.io`) && PathPrefix(`/web`)
+      traefik.http.routers.headscale-ui.entrypoints: websecure
       traefik.http.services.headscale-ui.loadBalancer.server.port: 80
 
 networks:
