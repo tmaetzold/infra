@@ -20,6 +20,13 @@ RUN apt-get update && \
       openssh-client \
       ca-certificates \
       gnupg \
+      build-essential \
+      procps \
+      file \
+      # CalDAV tools
+      vdirsyncer \
+      khal \
+      todoman \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Docker CLI (for DinD communication)
@@ -30,6 +37,18 @@ RUN install -m 0755 -d /etc/apt/keyrings && \
     apt-get update && \
     apt-get install -y --no-install-recommends docker-ce-cli && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install Homebrew (linuxbrew)
+RUN NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && \
+    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /etc/profile.d/brew.sh
+ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${PATH}"
+
+# Install brew packages
+RUN brew install gh himalaya
+
+# Install uv (Python package manager)
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.local/bin:${PATH}"
 
 # Clone and build OpenClaw
 WORKDIR /app
@@ -43,9 +62,16 @@ RUN pnpm ui:build
 
 ENV NODE_ENV=production
 
-# Allow non-root user to write temp files
-RUN chown -R node:node /app
+# Create openclaw user with home dir and set ownership
+RUN useradd -m -s /bin/bash openclaw && \
+    chown -R openclaw:openclaw /app && \
+    # Make brew accessible to openclaw user
+    chmod -R o+rx /home/linuxbrew && \
+    # Move uv to shared location
+    cp /root/.local/bin/uv /usr/local/bin/uv && \
+    cp /root/.local/bin/uvx /usr/local/bin/uvx 2>/dev/null || true
 
-USER node
+USER openclaw
+ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/usr/local/bin:${PATH}"
 
 CMD ["node", "openclaw.mjs", "gateway", "--allow-unconfigured", "--bind", "lan"]
