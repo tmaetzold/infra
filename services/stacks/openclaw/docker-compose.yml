@@ -1,0 +1,73 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
+
+# Stack: openclaw
+# Description: OpenClaw AI assistant with Docker-in-Docker and ProtonMail Bridge
+
+services:
+  openclaw:
+    container_name: openclaw
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - dind
+      - protonmail-bridge
+    volumes:
+      - /mnt/user/appdata/openclaw/.openclaw:/home/openclaw/.openclaw
+      - /mnt/user/repos:/home/openclaw/.openclaw/repos
+      - /mnt/user/appdata/openclaw/certs:/certs/client:ro
+      - /mnt/user/appdata:/mnt/user/appdata:ro
+      - /mnt/user/data:/mnt/user/data:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+      - net
+    environment:
+      TZ: "America/Chicago"
+      # Docker-in-Docker
+      DOCKER_HOST: "tcp://dind:2376"
+      DOCKER_TLS_VERIFY: "1"
+      DOCKER_CERT_PATH: "/certs/client"
+      # API Keys
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY}"
+      OPENCLAW_GATEWAY_TOKEN: "${OPENCLAW_GATEWAY_TOKEN}"
+      # ProtonMail Bridge (IMAP/SMTP)
+      IMAP_HOST: "protonmail-bridge"
+      IMAP_PORT: "143"
+      SMTP_HOST: "protonmail-bridge"
+      SMTP_PORT: "25"
+      PROTONMAIL_USER: "${PROTONMAIL_USER}"
+      PROTONMAIL_PASS: "${PROTONMAIL_PASS}"
+    labels:
+      traefik.enable: true
+      traefik.http.routers.openclaw.rule: "Host(`claw.trkm.io`)"
+      traefik.http.services.openclaw.loadBalancer.server.port: 18789
+
+  dind:
+    container_name: openclaw-dind
+    image: docker:dind
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - /mnt/user/appdata/openclaw/dind:/var/lib/docker
+      - /mnt/user/appdata/openclaw/certs:/certs
+    networks:
+      - net
+    environment:
+      DOCKER_TLS_CERTDIR: "/certs"
+
+  protonmail-bridge:
+    container_name: openclaw-protonmail
+    image: shenxn/protonmail-bridge:latest
+    restart: unless-stopped
+    volumes:
+      - /mnt/user/appdata/openclaw/protonmail:/root
+    networks:
+      - net
+
+networks:
+  proxy:
+    external: true
+  net:
