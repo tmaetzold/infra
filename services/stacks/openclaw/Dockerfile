@@ -29,24 +29,20 @@ RUN apt-get update && \
       todoman \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Docker CLI (for DinD communication)
+# Install Docker CLI + GitHub CLI (apt repos)
 RUN install -m 0755 -d /etc/apt/keyrings && \
+    # Docker
     curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc && \
     chmod a+r /etc/apt/keyrings/docker.asc && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable" > /etc/apt/sources.list.d/docker.list && \
+    # GitHub CLI
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg -o /etc/apt/keyrings/githubcli.gpg && \
+    chmod a+r /etc/apt/keyrings/githubcli.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list && \
+    # Install both
     apt-get update && \
-    apt-get install -y --no-install-recommends docker-ce-cli && \
+    apt-get install -y --no-install-recommends docker-ce-cli gh && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Install GitHub CLI (apt repo)
-RUN mkdir -p -m 755 /etc/apt/keyrings && \
-    wget -nv -O /tmp/githubcli.gpg https://cli.github.com/packages/githubcli-archive-keyring.gpg && \
-    cp /tmp/githubcli.gpg /etc/apt/keyrings/githubcli-archive-keyring.gpg && \
-    chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg && \
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends gh && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/githubcli.gpg
 
 # Install Himalaya (static binary)
 RUN HIMALAYA_VERSION=$(curl -sL https://api.github.com/repos/pimalaya/himalaya/releases/latest | jq -r .tag_name) && \
