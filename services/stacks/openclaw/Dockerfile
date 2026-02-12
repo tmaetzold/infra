@@ -38,17 +38,20 @@ RUN install -m 0755 -d /etc/apt/keyrings && \
     apt-get install -y --no-install-recommends docker-ce-cli && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Homebrew (linuxbrew)
-RUN NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" && \
-    echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /etc/profile.d/brew.sh
-ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${PATH}"
+# Install GitHub CLI (static binary)
+RUN GH_VERSION=$(curl -sL https://api.github.com/repos/cli/cli/releases/latest | jq -r .tag_name | sed 's/^v//') && \
+    curl -fsSL "https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_amd64.tar.gz" | \
+    tar xz -C /usr/local/bin --strip-components=2 --wildcards '*/bin/gh'
 
-# Install brew packages
-RUN brew install gh himalaya
+# Install Himalaya (static binary)
+RUN HIMALAYA_VERSION=$(curl -sL https://api.github.com/repos/pimalaya/himalaya/releases/latest | jq -r .tag_name | sed 's/^v//') && \
+    curl -fsSL "https://github.com/pimalaya/himalaya/releases/download/v${HIMALAYA_VERSION}/himalaya-v${HIMALAYA_VERSION}-x86_64-linux-musl.tar.gz" | \
+    tar xz -C /usr/local/bin himalaya
 
 # Install uv (Python package manager)
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="/root/.local/bin:${PATH}"
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
+    cp /root/.local/bin/uv /usr/local/bin/uv && \
+    cp /root/.local/bin/uvx /usr/local/bin/uvx 2>/dev/null || true
 
 # Clone and build OpenClaw
 WORKDIR /app
@@ -64,14 +67,8 @@ ENV NODE_ENV=production
 
 # Create openclaw user with home dir and set ownership
 RUN useradd -m -s /bin/bash openclaw && \
-    chown -R openclaw:openclaw /app && \
-    # Make brew accessible to openclaw user
-    chmod -R o+rx /home/linuxbrew && \
-    # Move uv to shared location
-    cp /root/.local/bin/uv /usr/local/bin/uv && \
-    cp /root/.local/bin/uvx /usr/local/bin/uvx 2>/dev/null || true
+    chown -R openclaw:openclaw /app
 
 USER openclaw
-ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/usr/local/bin:${PATH}"
 
 CMD ["node", "openclaw.mjs", "gateway", "--allow-unconfigured", "--bind", "lan"]
