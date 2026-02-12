@@ -67,10 +67,9 @@ RUN pnpm ui:build
 
 ENV NODE_ENV=production
 
-# Create openclaw user with home dir and set ownership
-RUN useradd -m -s /bin/bash openclaw && \
-    chown -R openclaw:openclaw /app
+# Use existing node user (uid 1000) from base image
+RUN chown -R node:node /app
 
-USER openclaw
+USER node
 
 CMD ["node", "openclaw.mjs", "gateway", "--allow-unconfigured", "--bind", "lan"]

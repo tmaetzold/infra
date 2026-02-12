@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
 
 # Stack: openclaw
-# Description: OpenClaw AI assistant with Docker-in-Docker and ProtonMail Bridge
+# Description: OpenClaw AI assistant with DinD and ProtonMail Bridge
 
 services:
   openclaw:
@@ -12,12 +12,11 @@ services:
     restart: unless-stopped
     depends_on:
       - dind
-      - dockerproxy
       - protonmail-bridge
     volumes:
       # OpenClaw state
-      - /mnt/user/appdata/openclaw/.openclaw:/home/openclaw/.openclaw
-      - /mnt/user/repos:/home/openclaw/.openclaw/repos
+      - /mnt/user/appdata/openclaw/.openclaw:/home/node/.openclaw
+      - /mnt/user/repos:/home/node/.openclaw/repos
       - /mnt/user/appdata/openclaw/certs:/certs/client:ro
       # Unraid shares
       - /mnt/user/appdata:/mnt/user/appdata:ro
@@ -39,11 +38,18 @@ services:
       - net
     environment:
       TZ: "America/Chicago"
-      # Docker via socket proxy (no direct socket access)
-      DOCKER_HOST: "tcp://dockerproxy:2375"
+      # Docker-in-Docker
+      DOCKER_HOST: "tcp://dind:2376"
+      DOCKER_TLS_VERIFY: "1"
+      DOCKER_CERT_PATH: "/certs/client"
       # API Keys
       ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY}"
       OPENCLAW_GATEWAY_TOKEN: "${OPENCLAW_GATEWAY_TOKEN}"
+      YNAB_API_KEY: "${YNAB_API_KEY}"
+      BRAVE_API_KEY: "${BRAVE_API_KEY}"
+      # Portainer API (for Docker management via REST)
+      PORTAINER_URL: "${PORTAINER_URL}"
+      PORTAINER_API_KEY: "${PORTAINER_API_KEY}"
       # ProtonMail Bridge (IMAP/SMTP)
       IMAP_HOST: "protonmail-bridge"
       IMAP_PORT: "143"
@@ -52,51 +58,11 @@ services:
       PROTONMAIL_USER: "${PROTONMAIL_USER}"
       PROTONMAIL_PASS: "${PROTONMAIL_PASS}"
     labels:
+      net.unraid.docker.icon: "https://openclaw.ai/icon.png"
+      net.unraid.docker.webui: "https://claw.trkm.io/"
       traefik.enable: true
       traefik.http.routers.openclaw.rule: "Host(`claw.trkm.io`)"
       traefik.http.services.openclaw.loadBalancer.server.port: 18789
-
-  dockerproxy:
-    container_name: openclaw-dockerproxy
-    image: tecnativa/docker-socket-proxy:0.4.2
-    restart: unless-stopped
-    privileged: true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    networks:
-      - net
-    environment:
-      # Read-only by default. Explicitly allow what we need.
-      LOG_LEVEL: info
-      # Info (read-only)
-      CONTAINERS: 1
-      IMAGES: 1
-      NETWORKS: 1
-      VOLUMES: 1
-      INFO: 1
-      VERSION: 1
-      EVENTS: 1
-      # Management (write)
-      POST: 1              # Allow start/stop/restart
-      ALLOW_START: 1
-      ALLOW_STOP: 1
-      ALLOW_RESTARTS: 1
-      # Deny dangerous operations
-      AUTH: 0
-      SECRETS: 0
-      SWARM: 0
-      BUILD: 0
-      COMMIT: 0
-      CONFIGS: 0
-      DISTRIBUTION: 0
-      EXEC: 0
-      GRPC: 0
-      NODES: 0
-      PLUGINS: 0
-      SERVICES: 0
-      SESSION: 0
-      SYSTEM: 0
-      TASKS: 0
 
   dind:
     container_name: openclaw-dind
