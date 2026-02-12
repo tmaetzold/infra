@@ -38,10 +38,15 @@ RUN install -m 0755 -d /etc/apt/keyrings && \
     apt-get install -y --no-install-recommends docker-ce-cli && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install GitHub CLI (static binary)
-RUN GH_VERSION=$(curl -sL https://api.github.com/repos/cli/cli/releases/latest | jq -r .tag_name | sed 's/^v//') && \
-    curl -fsSL "https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_amd64.tar.gz" | \
-    tar xz -C /usr/local/bin --strip-components=2 --wildcards '*/bin/gh'
+# Install GitHub CLI (apt repo)
+RUN mkdir -p -m 755 /etc/apt/keyrings && \
+    wget -nv -O /tmp/githubcli.gpg https://cli.github.com/packages/githubcli-archive-keyring.gpg && \
+    cp /tmp/githubcli.gpg /etc/apt/keyrings/githubcli-archive-keyring.gpg && \
+    chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends gh && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/githubcli.gpg
 
 # Install Himalaya (static binary)
 RUN HIMALAYA_VERSION=$(curl -sL https://api.github.com/repos/pimalaya/himalaya/releases/latest | jq -r .tag_name) && \
