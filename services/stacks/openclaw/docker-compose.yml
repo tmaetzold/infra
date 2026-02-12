@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
 
 # Stack: openclaw
-# Description: OpenClaw AI assistant with Docker-in-Docker and ProtonMail Bridge
+# Description: OpenClaw AI assistant with DinD and ProtonMail Bridge
 
 services:
   openclaw:
@@ -14,11 +14,23 @@ services:
       - dind
       - protonmail-bridge
     volumes:
-      - /mnt/user/appdata/openclaw/.openclaw:/home/openclaw/.openclaw
-      - /mnt/user/repos:/home/openclaw/.openclaw/repos
+      # OpenClaw state
+      - /mnt/user/appdata/openclaw/.openclaw:/home/node/.openclaw
+      - /mnt/user/repos:/home/node/.openclaw/repos
       - /mnt/user/appdata/openclaw/certs:/certs/client:ro
+      # Unraid shares
       - /mnt/user/appdata:/mnt/user/appdata:ro
+      - /mnt/user/appdata-dev:/mnt/user/appdata-dev
       - /mnt/user/data:/mnt/user/data:ro
+      - /mnt/user/db:/mnt/user/db
+      - /mnt/user/docs:/mnt/user/docs
+      - /mnt/user/domains/templates:/mnt/user/domains/templates
+      - /mnt/user/immich-data:/mnt/user/immich-data
+      - /mnt/user/isos:/mnt/user/isos
+      - /mnt/user/photos:/mnt/user/photos
+      - /mnt/user/photos_manual:/mnt/user/photos_manual
+      - /mnt/user/repos:/mnt/user/repos
+      # Timezone
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
@@ -33,6 +45,11 @@ services:
       # API Keys
       ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY}"
       OPENCLAW_GATEWAY_TOKEN: "${OPENCLAW_GATEWAY_TOKEN}"
+      YNAB_API_KEY: "${YNAB_API_KEY}"
+      BRAVE_API_KEY: "${BRAVE_API_KEY}"
+      # Portainer API (for Docker management via REST)
+      PORTAINER_URL: "${PORTAINER_URL}"
+      PORTAINER_API_KEY: "${PORTAINER_API_KEY}"
       # ProtonMail Bridge (IMAP/SMTP)
       IMAP_HOST: "protonmail-bridge"
       IMAP_PORT: "143"
@@ -41,6 +58,8 @@ services:
       PROTONMAIL_USER: "${PROTONMAIL_USER}"
       PROTONMAIL_PASS: "${PROTONMAIL_PASS}"
     labels:
+      net.unraid.docker.icon: "https://openclaw.ai/icon.png"
+      net.unraid.docker.webui: "https://claw.trkm.io/"
       traefik.enable: true
       traefik.http.routers.openclaw.rule: "Host(`claw.trkm.io`)"
       traefik.http.services.openclaw.loadBalancer.server.port: 18789
@@ -53,6 +72,7 @@ services:
     volumes:
       - /mnt/user/appdata/openclaw/dind:/var/lib/docker
       - /mnt/user/appdata/openclaw/certs:/certs
+      - /mnt/user/appdata-dev:/mnt/appdata
     networks:
       - net
     environment:
