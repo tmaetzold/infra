@@ -44,8 +44,8 @@ RUN GH_VERSION=$(curl -sL https://api.github.com/repos/cli/cli/releases/latest |
     tar xz -C /usr/local/bin --strip-components=2 --wildcards '*/bin/gh'
 
 # Install Himalaya (static binary)
-RUN HIMALAYA_VERSION=$(curl -sL https://api.github.com/repos/pimalaya/himalaya/releases/latest | jq -r .tag_name | sed 's/^v//') && \
-    curl -fsSL "https://github.com/pimalaya/himalaya/releases/download/v${HIMALAYA_VERSION}/himalaya-v${HIMALAYA_VERSION}-x86_64-linux-musl.tar.gz" | \
+RUN HIMALAYA_VERSION=$(curl -sL https://api.github.com/repos/pimalaya/himalaya/releases/latest | jq -r .tag_name) && \
+    curl -fsSL "https://github.com/pimalaya/himalaya/releases/download/${HIMALAYA_VERSION}/himalaya.x86_64-linux.tgz" | \
     tar xz -C /usr/local/bin himalaya
 
 # Install uv (Python package manager)
