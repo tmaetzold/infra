@@ -14,11 +14,25 @@ services:
       - dind
       - protonmail-bridge
     volumes:
+      # OpenClaw state
       - /mnt/user/appdata/openclaw/.openclaw:/home/openclaw/.openclaw
       - /mnt/user/repos:/home/openclaw/.openclaw/repos
       - /mnt/user/appdata/openclaw/certs:/certs/client:ro
+      # Docker socket (host Docker)
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Unraid shares
       - /mnt/user/appdata:/mnt/user/appdata:ro
+      - /mnt/user/appdata-dev:/mnt/user/appdata-dev
       - /mnt/user/data:/mnt/user/data:ro
+      - /mnt/user/db:/mnt/user/db
+      - /mnt/user/docs:/mnt/user/docs
+      - /mnt/user/domains/templates:/mnt/user/domains/templates
+      - /mnt/user/immich-data:/mnt/user/immich-data
+      - /mnt/user/isos:/mnt/user/isos
+      - /mnt/user/photos:/mnt/user/photos
+      - /mnt/user/photos_manual:/mnt/user/photos_manual
+      - /mnt/user/repos:/mnt/user/repos
+      # Timezone
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
@@ -53,6 +67,7 @@ services:
     volumes:
       - /mnt/user/appdata/openclaw/dind:/var/lib/docker
       - /mnt/user/appdata/openclaw/certs:/certs
+      - /mnt/user/appdata-dev:/mnt/appdata
     networks:
       - net
     environment:
